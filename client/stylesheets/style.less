@@ -1,0 +1,607 @@
+@light-brown         : #A57C67;
+@app-blue            : #5CA7A2;
+@app-light-blue      : #64B4AF;
+@white               : #FFFFFF;
+@grey-text-primary   : #ADADAD;
+@grey-text-secondary : #D1D1D1;
+@grey-ui 			 : #EFEFEF;
+@warning-red         : #C66F7A;
+
+body {
+	font-family: 'Open Sans', sans-serif;
+}
+
+
+#application-wrapper {
+	position: relative;
+	left: 50%;
+	width: 960px;
+	margin-left: -480px;
+}
+
+/* create zample popup */
+#create-zample-popup {
+	position: absolute;
+	left: 50%;
+	top: 100px;
+	margin: 0px 0px 0px -250px;
+	width: 500px;
+	height: 500px;
+	background-color: @grey-ui;
+	box-shadow: 5px 5px 5px @grey-text-secondary;
+	z-index: 1;
+	padding: 10px;
+
+	#close-create-zample-popup {
+		float: left;
+		padding: 0px;
+		background-color: @grey-ui;
+		border: none;
+		span {
+			color: @grey-text-primary;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	h1 {
+		color: @grey-text-primary;
+		font-weight: 300;
+		font-size: 24px;
+		text-align: center;
+	}
+
+	#create-zample-input-labels {
+		float: left;
+		width: 160px;
+
+		h2 {
+			font-size: 20px;
+			color: @grey-text-primary;
+			font-weight: 300;
+			text-align: right;
+		}
+	}
+
+	#create-zample-input-fields {
+		float: left;
+		width: 300px;
+		margin: 0px 0px 0px 10px;
+		input {
+			font-size: 14px;
+			padding-left: 5px;
+			width: 280px;
+			border: none;
+			margin-top: 20px;
+			color: @grey-text-primary;
+		}
+		select {
+			margin-bottom: 2px;
+			font-size: 14px;
+			width: 230px;
+			border: none;
+			margin-top: 22px;
+			background-color: white;
+			color: @grey-text-primary;
+
+			&:focus {
+				outline: none;
+			}
+		}
+	}
+
+	#create-zample-button {
+		position: absolute;
+		bottom: 20px;
+		left: 200px;
+		border: none;
+		padding: 10px 20px;
+		font-size: 20px;
+		color: white;
+		background-color: @app-blue;
+		font-weight: 300;
+		&:hover {
+			background-color: @app-light-blue;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+/* log in pupup */
+#log-in-popup {
+	position: absolute;
+	left: 50%;
+	top: 120px;
+	margin: 0px 0px 0px -200px;
+	width: 400px;
+	height: 200px;
+	background-color: @grey-ui;
+	box-shadow: 5px 5px 5px @grey-text-secondary;
+	z-index: 1;
+	padding: 10px;
+
+
+	#close-log-in-popup {
+		border: none;
+		float: left;
+		padding: 0px;
+		background-color: @grey-ui;
+
+		&:focus {
+			outline: none;
+		}
+		span {
+			color: @grey-text-primary;
+		}
+	}
+
+	h1 {
+		color: @grey-text-primary;
+		font-weight: 300;
+		font-size: 24px;
+		text-align: center;
+	}
+
+	#log-in-input-labels {
+		float: left;
+		width: 100px;
+
+		h2 {
+			font-size: 20px;
+			color: @grey-text-primary;
+			font-weight: 300;
+			text-align: right;
+		}
+	}
+
+	#log-in-input-fields {
+		float: left;
+		width: 240px;
+		margin: 0px 0px 0px 10px;
+		input {
+			font-size: 14px;
+			width: 230px;
+			border: none;
+			margin-top: 20px;
+		}
+	}
+
+	#log-in-button {
+		float: left;
+		clear: both;
+		margin: 20px 0px 0px 145px;
+		border: none;
+		padding: 10px 20px;
+		font-size: 20px;
+		color: white;
+		background-color: @app-blue;
+		font-weight: 300;
+		&:hover {
+			background-color: @app-light-blue;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
+
+
+/* create account popup */
+#create-account-popup {
+	position: absolute;
+	left: 50%;
+	top: 120px;
+	margin: 0px 0px 0px -200px;
+	width: 400px;
+	height: 430px;
+	background-color: @grey-ui;
+	box-shadow: 5px 5px 5px @grey-text-secondary;
+	z-index: 1;
+	padding: 10px;
+
+	#close-create-account-popup {
+		float: left;
+		padding: 0px;
+		background-color: @grey-ui;
+
+		span {
+			color: @grey-text-primary;
+		}
+	}
+	h1 {
+		color: @grey-text-primary;
+		font-weight: 300;
+		font-size: 24px;
+		text-align: center;
+	}
+
+	p {
+		color: @grey-text-primary;
+		padding: 0px 20px;
+	}
+
+	#create-account-input-labels {
+		float: left;
+		width: 170px;
+
+		h2 {
+			font-size: 20px;
+			color: @grey-text-primary;
+			font-weight: 300;
+			text-align: right;
+		}
+
+		h3 {
+			display: none;
+			font-size: 12px;
+			margin: -10px 0px 0px 0px;
+			color: @warning-red;
+			font-weight: 300;
+			text-align: right;
+		}
+	}
+	
+	#create-account-input-fields {
+		float: left;
+		width: 180px;
+		margin: 0px 0px 0px 10px;
+		input {
+			font-size: 14px;
+			border: none;
+			margin-top: 20px;
+		}
+	}
+
+	button {
+		border: none;
+		padding: 5px 10px;
+		font-size: 20px;
+		color: white;
+		background-color: @app-blue;
+
+		&:hover {
+			background-color: @app-light-blue;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	#submit-create-account {
+		float: left;
+		clear: both;
+		margin: 20px 0px 0px 150px;
+	}
+}
+
+
+/* home page at zample.com */
+#home-page {
+	width: 800px;
+	margin: 50px 0px 0px 65px;
+	
+	img {
+		margin: 5px 0px 0px 0px;
+		height: 70px;
+	}
+	
+	.splash-header {
+		padding-top:10px;
+	}
+	
+	.header-text {
+		text-align: center;
+		font-weight: 300;
+		color: @light-brown;
+		margin: 15px 0px 20px 0px;
+		font-size: 3em;
+	}
+	
+	.search-schools {
+		width: 800px;
+		margin: 35px 30px 0px 0px;
+		padding: 5px 20px 5px 20px;
+		background-color: @app-blue;
+		border: none;
+		font-size: 2.8em;
+		font-weight: 300;
+		color: @white;
+		&:focus {
+			outline: none;
+		}
+	}
+	.search-schools::-webkit-input-placeholder { /* WebKit browsers */
+	    color: white;
+	}
+	.search-schools:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+	    color: white;
+	}
+	.search-schools::-moz-placeholder { /* Mozilla Firefox 19+ */
+	    color: white;
+	}
+	.search-schools:-ms-input-placeholder { /* Internet Explorer 10+ */
+	    color: white;
+	}
+	.search-results {
+		width: 800px;
+		margin: 30px 0px 0px 0px;
+		padding: 0;
+		list-style-type: none;
+		max-height: 200px;
+		overflow-y: scroll;
+		li {
+			margin: 0px 0px 5px 0px;
+			padding: 0px 0px 0px 45px;
+			cursor: pointer;
+			color: @grey-text-primary;
+			font-size: 2em;
+			font-weight: 300;
+			&:hover {
+				background-color: #EFEFEF;
+			}
+
+			a {
+				color: @grey-text-primary;
+			}
+		}
+	}
+
+	.add-school {
+		float: right;
+		font-size: 1em;
+		font-weight: 300;
+		color: @grey-text-secondary;
+	}
+}
+
+/* Nav at the top of schools & course page */
+nav {
+	margin: 10px 0px 0px 0px;
+	
+	#zampler-logo {
+		height: 70px;
+	}
+
+	#add-a-zample {
+		float: right;
+		border: none;
+		background-color: @app-blue;
+		padding: 12px 35px;
+		font-size: 20px;
+		font-weight: 300;
+		color: white;
+
+		&:hover {
+			background-color: @app-light-blue;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+	
+	#account-buttons {
+		float: right;
+		h3 {
+			float: right;
+			clear: both;
+			margin: 5px 10px;
+			font-size: 15px;
+			color: @grey-text-secondary;
+			font-weight: 300;
+			cursor: pointer;
+
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+}
+
+/* Lists courses for each school */
+#school-page {
+	width: 960px;
+
+	.header-text {
+		margin: 15px 0px 35px 0px;
+		text-align: center;
+		font-weight: 300;
+		color: @light-brown;
+	}
+
+	#search-courses {
+		background-color: @grey-ui;
+		color: @grey-text-primary;
+		border: none;
+		width: 250px;
+		font-size: 18px;
+		padding: 5px 10px;
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.course-table {
+		margin: 20px 0px 0px 0px;
+
+		thead {
+			tr {
+				th {
+					color: @grey-text-primary;
+					font-weight: 300;
+					font-size: 16px;
+
+					&:nth-child(2) {
+						text-align: center;
+					}
+					&:nth-child(3) {
+						text-align: center;
+					}
+					&:last-child {
+						text-align: right;
+					}
+				}
+			}
+		}
+
+		tbody {
+			tr {
+				td {
+					cursor: pointer;
+					color: @app-blue;
+					font-weight: 300;
+					font-size: 24px;
+					padding: 15px 10px;
+
+					&:nth-child(2) {
+						text-align: center;
+					}
+					&:nth-child(3) {
+						text-align: center;
+					}
+					&:last-child {
+						text-align: right;
+
+						img {
+							height: 29px;
+							margin-right: 12px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+
+#course-page {
+	width: 960px;
+
+	.header-text {
+		margin: 15px 0px 35px 0px;
+		text-align: center;
+		font-weight: 300;
+		color: @light-brown;
+	}
+
+	#search-zamples {
+		background-color: @grey-ui;
+		color: @grey-text-primary;
+		border: none;
+		width: 250px;
+		font-size: 18px;
+		padding: 5px 10px;
+		&:focus {
+			outline: none;
+		}
+	}
+
+	.zample-table {
+		margin: 20px 0px 0px 0px;
+
+		thead {
+			tr {
+				th {
+					color: @grey-text-primary;
+					font-weight: 300;
+					font-size: 16px;
+
+					&:nth-child(2) {
+						text-align: left;
+					}
+					&:nth-child(3) {
+						text-align: center;
+					}
+					&:nth-child(4) {
+						text-align: center;
+					}
+				}
+			}
+		}
+
+		tbody {
+			tr {
+				td {
+					cursor: pointer;
+					color: @app-blue;
+					font-weight: 300;
+					font-size: 24px;
+					padding: 15px 10px;
+
+					&:nth-child(2) {
+						text-align: left;
+					}
+					&:nth-child(3) {
+						text-align: center;
+					}
+					&:nth-child(4) {
+						text-align: center;
+					}
+				}
+			}
+		}
+	}	
+}
+
+
+
+#zample-page {
+	width: 960px;
+
+	.header-text {
+		margin: 5px 0px 35px 0px;
+		text-align: center;
+		font-weight: 300;
+		color: @light-brown;
+	}
+
+	#zample-image-thumbnail-container {
+		img {
+			float: left;
+			cursor: pointer;
+			height: 100px;
+			margin: 0px 5px 5px 0px;
+		}
+	}
+
+	#selected-zample-image-container {
+		img {
+			max-width: 960px;
+		}
+	}
+
+	#likes {
+		position: relative;
+		top: 20px;
+		display: inline;
+
+		.liked {
+			color: green;
+		}
+
+		span {
+			cursor: pointer;
+		}
+	}
+	
+	#report-this-zample {
+		float: right;
+		position: relative;
+		top: 20px;
+		font-size: 12px;
+		background-color: #CC626A;
+		padding: 8px 12px;
+		border: none;
+
+		&:hover {
+			background-color: #C66F7A;
+		}
+	}
+}
