@@ -1,0 +1,1 @@
+var ZamplerApp = angular.module('zamplerApp', ['ngRoute']);

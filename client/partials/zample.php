@@ -7,7 +7,7 @@
             <h3 ng-click="showLogInPopup()">log in</h3>
         </div>
     </nav>
-    <h1 class='header-text'> {{ zample.name }} </h1>
+    <h1 class='header-text'> {{ zample.title }} </h1>
     <div id="zample-image-thumbnail-container" ng-repeat="link in zample_image_links">
         <img ng-src="/client/images/{{link}}" ng-click="setSelectedImage(link)">
     </div>

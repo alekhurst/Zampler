@@ -11,7 +11,13 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular-route.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.min.js"></script>
-    <script src="/client/javascripts/view-controller.js"></script>
+    <script src="/client/javascripts/angular_app.js"></script>
+    <script src="/client/javascripts/angular_routes.js"></script>
+    <script src="/client/javascripts/index_controller.js"></script>
+    <script src="/client/javascripts/home_controller.js"></script>
+    <script src="/client/javascripts/school_controller.js"></script>
+    <script src="/client/javascripts/course_controller.js"></script>
+    <script src="/client/javascripts/zampler_controller.js"></script>
     <script src="/client/javascripts/objects.js"></script>
   </head>
   <body ng-app="zamplerApp">
@@ -66,7 +72,8 @@
       <div id="create-zample-input-labels">
         <h2>school:</h2>
         <h2>course:</h2>
-        <h2>title:</h2>
+        <h2 ng-show="create_zample_parameters.creating_new_course">create course:</h2>
+        <h2>zample name:</h2>
         <h2>professor:</h2>
         <h2>date completed:</h2>
         <h2>difficulty:</h2>
@@ -74,12 +81,15 @@
         <h2>images:</h2>
       </div>
       <div id="create-zample-input-fields">
-        <select id="create-zample-school" ng-model="create_zample_parameters.school">
-          <option value="0">Santa Clara University</option>
-          <option value="1">San Jose State University</option>
+        <select id="create-zample-school" ng-change="updateCreateZampleCourseOptions(create_zample_parameters.school_id)" ng-options="a_school.id as a_school.name for a_school in schools" ng-model="create_zample_parameters.school_id">
+          <option value=''>Select School</option>
         </select>
-        <input id="create-zample-course" type="text" placeholder="ex. MATH11" ng-model="create_zample_parameters.course">
-        <input id="create-zample-title" type="text" placeholder="ex. First Midterm" ng-model="create_zample_parameters.title">
+        <select id="create-zample-course" ng-disabled="!create_zample_parameters.course_options" ng-model="create_zample_parameters.course_id" ng-change="checkIfCreatingNewCourse(create_zample_parameters.course_id)">
+          <option ng-repeat="a_course in create_zample_parameters.course_options" ng-value="a_course.id">{{ a_course.name }}</option>
+          <option value='new'>-- Create New Course --</option>
+        </select> 
+        <input id="create-zample-create-new-course" placeholder="ex. MATH 11" type="text" ng-model="create_zample_parameters.new_course_title" ng-show="create_zample_parameters.creating_new_course">
+        <input id="create-zample-title" type="text" placeholder="ex. First Midterm" ng-model="create_zample_parameters.zample_name">
         <input id="create-zample-professor" type="text" placeholder="ex. Lastname, Firstname" ng-model="create_zample_parameters.professor">
         <select id="create-zample-date-completed" ng-model="create_zample_parameters.date_completed">
           <option value="2010">2010</option>
@@ -102,14 +112,24 @@
           <option value='10'>10</option>
         </select>
         <select id="create-zample-curved" ng-model="create_zample_parameters.curved">
-          <option value="0">No</option>
+          <option value="1">No</option>
           <option value="10">Yes</option>
-          <option value="5">N/A</option>
+          <option value="na">N/A</option>
         </select>
-        <button id="create-zample-button" ng-click="createZampleInDatabase()">create</button>
       </div>
+      <div id="create-zample-errors">
+        <h3 ng-show="create_zample_parameters.error[0]"> Attempted course creation name already exists at this university. </h3>
+        <h3 ng-show="create_zample_parameters.error[1]"> No school chosen. </h3>
+        <h3 ng-show="create_zample_parameters.error[2]"> Course name blank. </h3>
+        <h3 ng-show="create_zample_parameters.error[3]"> Zample name blank.</h3>
+        <h3 ng-show="create_zample_parameters.error[4]"> Professor blank. </h3>
+        <h3 ng-show="create_zample_parameters.error[5]"> Date completed blank. </h3>
+        <h3 ng-show="create_zample_parameters.error[6]"> Difficulty blank. </h3>
+        <h3 ng-show="create_zample_parameters.error[7]"> Curved blank. </h3>
+        <h3 ng-show="create_zample_parameters.error[8]"> No images uploaded. </h3>
+      </div>
+      <button id="create-zample-button" ng-click="createZampleInDatabase()">create</button>
     </div>
-
     <!-- This is where views are injected -->
   	<div id='application-wrapper'>
   		<div ng-view></div>

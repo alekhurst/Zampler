@@ -14,7 +14,7 @@
             <tr>
                 <th class='col-md-3'>Course Name</th>
                 <th class='col-md-3'>Zamples</th>
-                <th class='col-md-3'>Curve</th>
+                <th class='col-md-3'>Graded on a Curve?</th>
                 <th class='col-md-4'>Difficulty</th>
             </tr>
         </thead>
@@ -22,8 +22,8 @@
             <tr ng-repeat="course in courses | filter:search" ng-click="openZamplesForThisCourse(course.id)">
                 <td class='col-md-3'> {{ course.name }} </td>
                 <td class='col-md-3'> {{ course.zample_count }} </td>
-                <td class='col-md-3'> {{ course.curved }} </td>
-                <td class='col-md-3'> <img ng-src="/client/images/difficulty-10-indicator.png"> </td>
+                <td class='col-md-3'> {{ course.curve }} </td>
+                <td class='col-md-3'> <img ng-src="/client/images/{{ course.difficulty }}"> </td>
             </tr>
         </tbody>
     </table>

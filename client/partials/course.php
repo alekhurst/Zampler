@@ -20,9 +20,9 @@
         </thead>
         <tbody>
             <tr ng-repeat="zample in zamples" ng-click="openThisZample(zample.id)">
-                <td class='col-md-5'> {{ zample.name }} </td>
+                <td class='col-md-5'> {{ zample.title }} </td>
                 <td class='col-md-4'> {{ zample.professor }} </td>
-                <td class='col-md-2'> {{ zample.completed }} </td>
+                <td class='col-md-2'> {{ zample.date_completed }} </td>
                 <td class='col-md-1'> {{ zample.likes }} </td>
             </tr>
         </tbody>

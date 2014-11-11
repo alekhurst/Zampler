@@ -5,5 +5,14 @@
     <ul class='search-results' >
       <li ng-repeat='school in schools | filter:search' ng-click="openCoursesForThisSchool(school.id)">{{ school.name }}</li>
     </ul>
-    <h3 class='add-school'>don't see your school?</h3>
+    <h3 class='add-school' ng-click="showRequestSchoolPopup()">don't see your school?</h3>
+</div>
+
+<div id="request-school-popup" ng-cloak="request_school_popup" ng-show="request_school_popup">
+	<button id="close-request-school-popup" ng-click="hideRequestSchoolPopup()">
+        <span class="glyphicon glyphicon-remove"></span>
+    </button>
+	<h1>Request Your School</h1>
+	<h3>School Name:</h3><input type="text" ng-model="requested_school">
+	<button id="submit-request-school" ng-click="submitRequestedSchool()">submit</button>
 </div>

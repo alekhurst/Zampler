@@ -5,7 +5,7 @@
 @grey-text-primary   : #ADADAD;
 @grey-text-secondary : #D1D1D1;
 @grey-ui 			 : #EFEFEF;
-@warning-red         : #C66F7A;
+@warning-red         : #DA6964;
 
 body {
 	font-family: 'Open Sans', sans-serif;
@@ -26,7 +26,7 @@ body {
 	top: 100px;
 	margin: 0px 0px 0px -250px;
 	width: 500px;
-	height: 500px;
+	height: 600px;
 	background-color: @grey-ui;
 	box-shadow: 5px 5px 5px @grey-text-secondary;
 	z-index: 1;
@@ -110,8 +110,93 @@ body {
 			outline: none;
 		}
 	}
+
+	#create-zample-errors {
+		height: 90px;
+		width: 420px;
+		left: 30px;
+		position: absolute;
+		bottom: 60px;
+
+		h3 {
+			font-size: 12px;
+			margin: 5px;
+			color: @warning-red;
+			display: inline;
+		}
+	}
 }
 
+/* request your school to zampler popup */
+#request-school-popup {
+	position: absolute;
+	left: 50%;
+	top: 120px;
+	margin: 0px 0px 0px -200px;
+	width: 400px;
+	height: 200px;
+	background-color: @grey-ui;
+	box-shadow: 5px 5px 5px @grey-text-secondary;
+	z-index: 1;
+	padding: 10px;
+
+	#close-request-school-popup {
+		float: left;
+		padding: 0px;
+		background-color: @grey-ui;
+		border: none;
+		span {
+			color: @grey-text-primary;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	h1 {
+		color: @grey-text-primary;
+		font-weight: 300;
+		font-size: 24px;
+		text-align: center;
+	}
+
+	h3 {
+		float: left;
+		font-size: 20px;
+		color: @grey-text-primary;
+		font-weight: 300;
+		margin: 18px 0px 0px 10px;
+	}
+
+	input {
+		float: left;
+		width: 235px;
+		display: inline;
+		margin: 18px 0px 0px 5px;
+		padding: 0px 0px 0px 5px;
+		border: none;
+	}
+
+	#submit-request-school {
+		position: absolute;
+		bottom: 20px;
+		left: 150px;
+		border: none;
+		padding: 10px 20px;
+		font-size: 20px;
+		color: white;
+		background-color: @app-blue;
+		font-weight: 300;
+		&:hover {
+			background-color: @app-light-blue;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
 /* log in pupup */
 #log-in-popup {
 	position: absolute;
@@ -354,10 +439,15 @@ body {
 	}
 
 	.add-school {
+		cursor: pointer;
 		float: right;
 		font-size: 1em;
 		font-weight: 300;
 		color: @grey-text-secondary;
+
+		&:hover {
+			text-decoration: underline;
+		}
 	}
 }
 
