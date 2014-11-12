@@ -1,10 +1,15 @@
 <div id='course-page'>
     <nav>
         <a href="/#/"><img id='zampler-logo' src='/client/images/full-logo.png'></a>
-        <button id='add-a-zample' ng-click="showCreateZamplePopup()">add a zample</button>
-        <div id="account-buttons">
+        <button id='add-a-zample' ng-click="showCreateZamplePopup()" ng-cloak ng-show="user">add a zample</button>
+        <button id='add-a-zample' ng-click="showLogInPopup()" ng-hide="user">add a zample</button>
+        <div class="account-buttons" ng-hide="user">
             <h3 ng-click="showCreateAccountPopup()">create account</h3>
             <h3 ng-click="showLogInPopup()">log in</h3>
+        </div>
+        <div class="account-buttons" ng-cloak ng-show="user">
+            <h3>hello, {{user.username}}</h3>
+            <h3 ng-click="logOut()">log out</h3>
         </div>
     </nav>
     <h1 class='header-text'> {{ current_course.name }} </h1>

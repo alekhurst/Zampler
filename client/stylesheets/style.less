@@ -10,7 +10,11 @@
 body {
 	font-family: 'Open Sans', sans-serif;
 }
-
+button {
+	&:focus {
+		outline: none;
+	}
+}
 
 #application-wrapper {
 	position: relative;
@@ -258,8 +262,8 @@ body {
 
 	#log-in-button {
 		float: left;
-		clear: both;
-		margin: 20px 0px 0px 145px;
+		clear: none;
+		margin: 20px 0px 0px 10px;
 		border: none;
 		padding: 10px 20px;
 		font-size: 20px;
@@ -273,6 +277,32 @@ body {
 		&:focus {
 			outline: none;
 		}
+	}
+	#create-account-button {
+		float: left;
+		clear: both;
+		margin: 20px 0px 0px 58px;
+		border: none;
+		padding: 10px 20px;
+		font-size: 20px;
+		color: white;
+		background-color: @app-blue;
+		font-weight: 300;
+		&:hover {
+			background-color: @app-light-blue;
+		}
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	#log-in-err {
+		display: block;
+		float: left;
+		margin: 15px 0px 0px 20px;
+		font-size: 15px;
+		color: #da6964;
 	}
 }
 
@@ -349,6 +379,7 @@ body {
 		font-size: 20px;
 		color: white;
 		background-color: @app-blue;
+		font-weight: 300;
 
 		&:hover {
 			background-color: @app-light-blue;
@@ -356,6 +387,18 @@ body {
 
 		&:focus {
 			outline: none;
+		}
+	}
+	#create-account-errors {
+		float: left;
+		margin-left: 20px;
+		width: 340px;
+		height: 50px;
+
+		h3 {
+			display: inline;
+			color: @warning-red;
+			font-size: 14px;
 		}
 	}
 
@@ -477,7 +520,7 @@ nav {
 		}
 	}
 	
-	#account-buttons {
+	.account-buttons {
 		float: right;
 		h3 {
 			float: right;
@@ -686,12 +729,67 @@ nav {
 		position: relative;
 		top: 20px;
 		font-size: 12px;
-		background-color: #CC626A;
+		background-color: @warning-red;
 		padding: 8px 12px;
 		border: none;
 
 		&:hover {
-			background-color: #C66F7A;
+			background-color: #dd7873;
 		}
+	}
+
+	#remove-this-zample {
+		float: right;
+		position: relative;
+		top: 20px;
+		font-size: 12px;
+		background-color: @warning-red;
+		padding: 8px 12px;
+		border: none;
+
+		&:hover {
+			background-color: #dd7873;
+		}
+	}
+}
+#confirm-remove-zample-popup {
+	position: absolute;
+	left: 50%;
+	top: 100px;
+	margin: 0px 0px 0px -150px;
+	width: 330px;
+	height: 170px;
+	background-color: @grey-ui;
+	box-shadow: 5px 5px 5px @grey-text-secondary;
+	z-index: 1;
+	padding: 10px;
+
+	h2 {
+		color: @grey-text-primary;
+		font-size: 20px;
+		font-weight: 300;
+		padding: 0px 0px 0px 20px;
+	}
+
+	button {
+		padding: 10px 25px;
+		border: none;
+		margin-top: 15px;
+	}
+
+	#no-remove {
+		margin-left: 85px;
+		background-color: @app-blue;
+		color: white;
+		font-weight: 300;
+		&:hover {
+			background-color: @app-light-blue;
+		}
+	} 
+
+	#yes-remove {
+		font-weight: 300;
+		background-color: @grey-text-secondary;
+		color: @grey-text-primary
 	}
 }

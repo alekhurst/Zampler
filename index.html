@@ -17,7 +17,7 @@
     <script src="/client/javascripts/home_controller.js"></script>
     <script src="/client/javascripts/school_controller.js"></script>
     <script src="/client/javascripts/course_controller.js"></script>
-    <script src="/client/javascripts/zampler_controller.js"></script>
+    <script src="/client/javascripts/zample_controller.js"></script>
     <script src="/client/javascripts/objects.js"></script>
   </head>
   <body ng-app="zamplerApp">
@@ -28,7 +28,7 @@
         <span class="glyphicon glyphicon-remove"></span>
       </button>
       <h1>Create an Account</h1>
-      <p>You will remain anonymous after creating an account. To change this, uncheck "keep me anonymous" while creating a zample and your username will be shown. Comments will be associated with your username.</p>
+      <p>You will remain anonymous after creating an account, except for comments, which will be associated with your username.</p>
       <div id="create-account-input-labels">
         <h2>email:</h2>
         <h3>invalid email</h3>
@@ -39,12 +39,19 @@
         <h2>verify password:</h2>
       </div>
       <div id="create-account-input-fields">
-        <input id="create-account-email" type="text">
-        <input id="create-account-username" type="text">
-        <input id="create-account-password" type="text">
-        <input id="create-account-verify-password" type="text">
+        <input id="create-account-email" type="text" ng-model="create_account_parameters.email">
+        <input id="create-account-username" type="text" ng-model="create_account_parameters.username">
+        <input id="create-account-password" type="password" ng-model="create_account_parameters.password1">
+        <input id="create-account-verify-password" type="password" ng-model="create_account_parameters.password2">
       </div>
-      <button id="submit-create-account">create</button>
+      <div id="create-account-errors" ng-show="create_account_parameters.errors_exist">
+        <h3 ng-show="create_account_parameters.errors[0]"> Invalid email. </h3>
+        <h3 ng-show="create_account_parameters.errors[1]"> Username blank. </h3>
+        <h3 ng-show="create_account_parameters.errors[2]"> Password not long enough. </h3>
+        <h3 ng-show="create_account_parameters.errors[3]"> Passwords do not match. </h3>
+        <h3 ng-show="create_account_parameters.errors[4]"> Username or email already in use. </h3>
+      </div>
+      <button id="submit-create-account" ng-click="tryToCreateAccount()">create</button>
     </div>
     
     <!-- Log In Popup -->
@@ -57,10 +64,12 @@
         <h2>password:</h2>
       </div>
       <div id="log-in-input-fields">
-        <input id="log-in-account-email" type="text">
-        <input id="log-in-account-password" type="text">
+        <input id="log-in-account-email" type="text" ng-model="log_in_credentials.email">
+        <input id="log-in-account-password" type="password" ng-model="log_in_credentials.password">
       </div>
-      <button id="log-in-button">log in</button>
+      <h1 id="log-in-err" ng-show="log_in_credentials.error">Invalid Login Info</h1>
+      <button id="create-account-button" ng-click="showCreateAccountPopup();">create account</button>
+      <button id="log-in-button" ng-click="logIn()">log in</button>   
     </div>
 
     <!-- Add a Zample Popup -->
@@ -127,6 +136,7 @@
         <h3 ng-show="create_zample_parameters.error[6]"> Difficulty blank. </h3>
         <h3 ng-show="create_zample_parameters.error[7]"> Curved blank. </h3>
         <h3 ng-show="create_zample_parameters.error[8]"> No images uploaded. </h3>
+        <h3 ng-show="create_zample_parameters.error[9]"> SORRY, this is a weird bug -- but please change your course to a different one, and then re-select the desired course. </h3>
       </div>
       <button id="create-zample-button" ng-click="createZampleInDatabase()">create</button>
     </div>

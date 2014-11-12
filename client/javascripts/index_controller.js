@@ -4,6 +4,9 @@ ZamplerApp.run([
 "$location",
 "$route", 
 function($rootScope, $location, $route) {
+
+    $rootScope.user = undefined;
+    $rootScope.log_in_credentials = {};
     $rootScope.schools = window.zampler.schools;
 
     $rootScope.create_account_popup = false;
@@ -12,33 +15,196 @@ function($rootScope, $location, $route) {
 
     $rootScope.showLogInPopup = function() {
         $rootScope.log_in_popup = true;
+        $rootScope.hideCreateAccountPopup();
     }; $rootScope.showCreateAccountPopup = function() {
         $rootScope.create_account_popup = true;
+        $rootScope.hideLogInPopup();
     }; $rootScope.showCreateZamplePopup = function() {
         $rootScope.create_zample_popup = true;
     }; 
 
     $rootScope.hideLogInPopup = function() {
         $rootScope.log_in_popup = false;
+        if($rootScope.log_in_credentials)
+            $rootScope.log_in_credentials.error = false;
     }; $rootScope.hideCreateAccountPopup = function() {
+        if($rootScope.create_account_parameters)
+            $rootScope.create_account_parameters.errors = [];
         $rootScope.create_account_popup = false;
     }; $rootScope.hideCreateZamplePopup = function() {
         $rootScope.create_zample_popup = false;
     };
 
-    $rootScope.recalculateCourseStats = function(course_id) {
+    /**
+     * at every reload, check if user is logged in
+     */
+    $rootScope.checkIfLoggedIn = function() {
         $.ajax({
-            url : "/server/recalculate_course_stats.php",
+            url : "/server/check_if_logged_in.php",
             type: "POST",
-            data : { 
-                        course : course_id,
-                   },
-            success: function() { 
-
+            success: function(data) {
+                if(data != 'not_logged_in') {
+                    data = JSON.parse(data);
+                    $rootScope.user = {
+                        id       : data[0],
+                        username : data[1],
+                        email    : data[2]
+                    }
+                } else {
+                    $rootScope.user = undefined;
+                }
+                $rootScope.$apply();
             }
         });
-    };
+    }
+    $rootScope.checkIfLoggedIn();
 
+    $rootScope.logOut = function() {
+        $.ajax({
+            url : "/server/log_out.php",
+            type: "POST",
+            data : {},
+            success: function(data) {
+                $rootScope.checkIfLoggedIn();
+            }
+        });
+    }
+    $rootScope.logIn = function() {
+        if($rootScope.log_in_credentials.email && $rootScope.log_in_credentials.password) {
+            $.ajax({
+                url : "/server/log_in.php",
+                type: "POST",
+                data : {
+                    email    : $rootScope.log_in_credentials.email,
+                    password : $rootScope.log_in_credentials.password
+                },
+                success: function(data) {
+                    if(data != 'null' && data != 'invalid' && data) {
+                        data = JSON.parse(data);
+                        $rootScope.user = {
+                            id       : data[0],
+                            username : data[1],
+                            email    : data[2]
+                        }
+
+                        $rootScope.log_in_credentials = undefined;
+                        $rootScope.hideLogInPopup();
+                    } else {
+                        $rootScope.log_in_credentials.error = true;
+                    }
+                    $rootScope.$apply();
+                }
+            });
+        } else {
+            $rootScope.log_in_credentials.error = true;
+        }
+    }
+
+
+    /* ----------------- BEGIN ACCOUNT CREATION STUFF --------------------------- */
+    /**
+     * Create an account - Parameters used throughout creating
+     */
+
+    $rootScope.create_account_parameters = {
+        email : undefined,
+        username : undefined,
+        password1 : undefined,
+        password2 : undefined,
+        errors : [],
+        erros_exist : undefined
+    }
+
+    $rootScope.checkCreateAccountInput = function() {
+        var email_regex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        $rootScope.create_account_parameters.errors_exist = false;
+
+        if(email_regex.test($rootScope.create_account_parameters.email) != true)
+            $rootScope.create_account_parameters.errors[0] = true;
+        else
+            $rootScope.create_account_parameters.errors[0] = false;
+        
+        if($rootScope.create_account_parameters.username === '' || $rootScope.create_account_parameters.username == undefined)
+            $rootScope.create_account_parameters.errors[1] = true;
+        else
+            $rootScope.create_account_parameters.errors[1] = false
+        
+        if($rootScope.create_account_parameters.password1 == undefined || $rootScope.create_account_parameters.password1.length < 5)
+            $rootScope.create_account_parameters.errors[2] = true;
+        else
+            $rootScope.create_account_parameters.errors[2] = false;
+        
+        if($rootScope.create_account_parameters.password1 != $rootScope.create_account_parameters.password2)
+            $rootScope.create_account_parameters.errors[3] = true;
+        else
+            $rootScope.create_account_parameters.errors[3] = false;
+
+        for(var i = 0; i<4; i++) {
+            if($rootScope.create_account_parameters.errors[i] == true) {
+                $rootScope.create_account_parameters.errors_exist = true;
+                break;
+            }
+        }
+    }
+
+    $rootScope.tryToCreateAccount = function() {
+        $rootScope.checkCreateAccountInput();
+        if($rootScope.create_account_parameters.errors_exist)
+            return;
+        else {
+            $.ajax({
+                url : "/server/check_for_duplicate_account.php",
+                type: "POST",
+                data : { 
+                            email : $rootScope.create_account_parameters.email,
+                            username : $rootScope.create_account_parameters.username
+                       },
+                success: function(data) { 
+                    if(data == 'duplicate') {
+                        $rootScope.create_account_parameters.errors_exist = true;
+                        $rootScope.create_account_parameters.errors[4] = true;
+                        $rootScope.$apply();
+                        return;
+                    } else if(data == 'ok') {
+                        $rootScope.create_account_parameters.errors[4] = false;
+                        $rootScope.$apply();
+                        $rootScope.createAccountInDatabase();
+                    }
+                }
+            });
+        }
+    }
+
+    $rootScope.createAccountInDatabase = function() {
+        $.ajax({
+            url : "/server/create_account.php",
+            type: "POST",
+            data : { 
+                        email : $rootScope.create_account_parameters.email,
+                        username : $rootScope.create_account_parameters.username,
+                        password : $rootScope.create_account_parameters.password1
+                   },
+            success: function() { 
+                clearCreateAccountParams();
+                $rootScope.create_account_popup = false;
+                $rootScope.checkIfLoggedIn();
+                $rootScope.$apply();
+            }
+        });
+
+        function clearCreateAccountParams() {
+            $rootScope.create_account_parameters = {
+                email : undefined,
+                username : undefined,
+                password1 : undefined,
+                password2 : undefined,
+                errors : [],
+                erros_exist : undefined
+            }
+        }
+    }
+
+    /* ----------------- BEGIN ZAMPLE CREATION STUFF --------------------------- */
     /**
      * Create a Zample - Parameters used throughout creating
      */
@@ -57,7 +223,8 @@ function($rootScope, $location, $route) {
         curved : undefined,
         images : undefined,
         error : [],
-        errors_exist : undefined
+        errors_exist : undefined,
+        flag_to_change_course : undefined
     };
 
     /* PREPARE YOURSELF! HERE COMES THE STORMMMMMMMMMMMM 
@@ -77,8 +244,9 @@ function($rootScope, $location, $route) {
                 if(data != 'null' && data) {
                     $rootScope.create_zample_parameters.course_options = JSON.parse(data);
                 } else {
-                    $rootScope.create_zample_parameters.course_options = [{name: ' ', id: ' '}];
+                    $rootScope.create_zample_parameters.course_options = [{name: '', id: ''}];
                 }
+                $rootScope.create_zample_parameters.flag_to_change_course = true; // user cannot submit this form until they change the course
                 $rootScope.$apply();
             }
         });
@@ -92,6 +260,7 @@ function($rootScope, $location, $route) {
             $rootScope.create_zample_parameters.creating_new_course = true;
         else
             $rootScope.create_zample_parameters.creating_new_course = false;
+        $rootScope.create_zample_parameters.flag_to_change_course = false; 
     }; 
 
     /**
@@ -105,7 +274,7 @@ function($rootScope, $location, $route) {
             checkUserInput();
             if($rootScope.create_zample_parameters.errors_exist == true) {
                 return;
-            } else {
+            } else { // no errors, create the new course
                 $.ajax({
                     url : "/server/create_course.php",
                     type: "POST",
@@ -134,7 +303,7 @@ function($rootScope, $location, $route) {
                     }
                 });
             }
-        } else {
+        } else { // user not creating new course
             checkUserInput();
             if($rootScope.create_zample_parameters.errors_exist == true)
                 return;
@@ -158,7 +327,7 @@ function($rootScope, $location, $route) {
                 url : "/server/create_zample.php",
                 type: "POST",
                 data : { 
-                            user_id        : 0,
+                            user_id        : $rootScope.user.id,
                             school_id      : $rootScope.create_zample_parameters.school_id,
                             course_id      : cid,
                             zample_name    : $rootScope.create_zample_parameters.zample_name,
@@ -189,7 +358,7 @@ function($rootScope, $location, $route) {
             } else {
                 $rootScope.create_zample_parameters.error[1] = false;
             } 
-            if($rootScope.create_zample_parameters.course_id === '' || $rootScope.create_zample_parameters.course_id == undefined 
+            if($rootScope.create_zample_parameters.course_id === '' || $rootScope.create_zample_parameters.course_id == undefined
                 || ($rootScope.create_zample_parameters.creating_new_course  && ($rootScope.create_zample_parameters.new_course_title === '' || $rootScope.create_zample_parameters.new_course_title == undefined))) {
                 $rootScope.create_zample_parameters.error[2] = true;
             } else {
@@ -220,6 +389,11 @@ function($rootScope, $location, $route) {
             } else {
                 $rootScope.create_zample_parameters.error[7] = false;
             } 
+            if($rootScope.create_zample_parameters.flag_to_change_course === true) {
+                $rootScope.create_zample_parameters.error[9] = true;
+            } else {
+                $rootScope.create_zample_parameters.error[9] = false;
+            }
             if($rootScope.create_zample_parameters.images) {
                 // $rootScope.create_zample_parameters.error[8];
                 // $rootScope.create_zample_parameters.errors_exist = true;
@@ -252,5 +426,21 @@ function($rootScope, $location, $route) {
                 errors_exist : undefined
             };
         }
+    };
+
+    /**
+     * Called when a zample is added or removed
+     */
+    $rootScope.recalculateCourseStats = function(course_id) {
+        $.ajax({
+            url : "/server/recalculate_course_stats.php",
+            type: "POST",
+            data : { 
+                        course : course_id,
+                   },
+            success: function() { 
+
+            }
+        });
     };
 }]);

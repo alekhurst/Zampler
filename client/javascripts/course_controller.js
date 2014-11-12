@@ -2,7 +2,8 @@
 ZamplerApp.controller('CourseController', [
 '$scope',
 '$routeParams',
-function($scope, $routeParams) {
+'$rootScope',
+function($scope, $routeParams, $rootScope) {
     $scope.zamples = [];
     $scope.current_course = {};
 
@@ -16,7 +17,7 @@ function($scope, $routeParams) {
                     },
             success: function(data) { 
                 $scope.current_course = JSON.parse(data)[0];
-                $scope.$apply();
+                $scope.$digest();
             }
         });
     }
@@ -30,7 +31,7 @@ function($scope, $routeParams) {
                    },
             success: function(data) { 
                 $scope.zamples = JSON.parse(data);
-                $scope.$apply();
+                $scope.$digest();
             }
         });
     }

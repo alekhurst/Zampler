@@ -1,0 +1,35 @@
+<div id='zample-page'>
+    <nav>
+        <a href="/#/"><img id='zampler-logo' src='/client/images/full-logo.png'></a>
+        <button id='add-a-zample' ng-click="showCreateZamplePopup()" ng-cloak ng-show="user">add a zample</button>
+        <button id='add-a-zample' ng-click="showLogInPopup()" ng-hide="user">add a zample</button>
+        <div class="account-buttons" ng-hide="user">
+            <h3 ng-click="showCreateAccountPopup()">create account</h3>
+            <h3 ng-click="showLogInPopup()">log in</h3>
+        </div>
+        <div class="account-buttons" ng-cloak ng-show="user">
+            <h3>hello, {{user.username}}</h3>
+            <h3 ng-click="logOut()">log out</h3>
+        </div>
+    </nav>
+    <h1 class='header-text'> {{ zample.title }} </h1>
+    <!-- <div id="zample-image-thumbnail-container" ng-repeat="link in zample_image_links"> -->
+    <div id="zample-image-thumbnail-container">
+        <img ng-src="/client/images/zample-demo-2.jpg" ng-click="setSelectedImage(link)">
+        <img ng-src="/client/images/zample-demo-1.jpg" ng-click="setSelectedImage(link)">
+        <img ng-src="/client/images/zample-demo-3.jpg" ng-click="setSelectedImage(link)">
+        <img ng-src="/client/images/zample-demo-4.jpg" ng-click="setSelectedImage(link)">
+    </div>
+    <div id="selected-zample-image-container">
+        <img ng-src="/client/images/zample-demo-2.jpg">
+    </div>
+    <h1 id="likes"><span class="glyphicon glyphicon-thumbs-up"></span> 3</h1>
+    <button id="report-this-zample" ng-hide="user_owns_this_zample">report this zample</button>
+    <button id="remove-this-zample" ng-show="user_owns_this_zample" ng-cloak ng-click="showRemoveZamplePopup()">delete this zample</button>
+</div>
+
+<div id="confirm-remove-zample-popup" ng-show="remove_zample_popup">
+    <h2>Are you sure you want to delete this? It might help somebody.</h2>
+    <button id="no-remove" ng-click="hideRemoveZamplePopup()">no</button>
+    <button id="yes-remove" ng-click="deleteThisZample()">yes</button>
+</div>

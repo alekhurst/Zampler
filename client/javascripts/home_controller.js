@@ -1,7 +1,8 @@
 // ---------- Home Page Controller -----------
 ZamplerApp.controller('HomeController', [
 '$scope',
-function($scope, $routeParams) {
+'$rootScope',
+function($scope, $routeParams, $rootScope) {
     $scope.request_school_popup = false;
     $scope.requested_school = '';
     $scope.school_search = 'Search for your school...';
@@ -28,7 +29,7 @@ function($scope, $routeParams) {
             success: function(data) { 
                 $scope.requested_school = '';
                 $scope.request_school_popup = false;
-                $scope.$apply();
+                $scope.$digest();
             }
         });
     }

@@ -2,7 +2,8 @@
 ZamplerApp.controller('SchoolController', [
 '$scope',
 '$routeParams',
-function($scope, $routeParams) {
+'$rootScope',
+function($scope, $routeParams, $rootScope) {
     $scope.courses = [];
     $scope.current_school = window.zampler.schools[$routeParams.school_id]; 
 
@@ -17,7 +18,7 @@ function($scope, $routeParams) {
                 } else {
                     $scope.courses[i] = [];
                 }
-                $scope.$apply();
+                $scope.$digest();
             }
         });
 

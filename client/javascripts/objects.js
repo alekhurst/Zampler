@@ -1,5 +1,4 @@
 var zampler = {
-	
 	schools : [
 		{ id: 0, name: 'Santa Clara University' },
 		{ id: 1, name: 'San Jose State University' },
@@ -8,15 +7,6 @@ var zampler = {
 		{ id: 4, name: 'Santa Rosa Junior College' },
 		{ id: 5, name: 'University of San Fransisco' },
 		{ id: 6, name: 'San Fransisco State University' },
-	],
-
-
-	zamples : [
-		{ id: 0, school_id: 0, course_id: 1, name: 'Midterm 1', professor: 'Atkinson, Darren', completed: '2014', likes: 3, images: 'zample-demo-1.jpg,zample-demo-2.jpg,zample-demo-3.jpg,zample-demo-4.jpg' },
-		{ id: 1, school_id: 0, course_id: 0, name: 'Directives Homework', professor: 'Atkinson, Darren', completed: '2014', likes: 6, images: 'zample-demo-1.jpg,zample-demo-2.jpg,zample-demo-3.jpg,zample-demo-4.jpg' },
-		{ id: 2, school_id: 0, course_id: 0, name: 'Syllabus', professor: 'Ogunfunmi, Tokumbo', completed: '2014', likes: 7, images: 'zample-demo-1.jpg,zample-demo-2.jpg,zample-demo-3.jpg,zample-demo-4.jpg' },
-		{ id: 3, school_id: 0, course_id: 0, name: 'Final', professor: 'Atkinson, Darren', completed: '2014', likes: 9, images: 'zample-demo-1.jpg,zample-demo-2.jpg,zample-demo-3.jpg,zample-demo-4.jpg' },
-		{ id: 4, school_id: 0, course_id: 0, name: 'Homework 2', professor: 'Atkinson, Darren', completed: '2014', likes: 3, images: 'zample-demo-1.jpg,zample-demo-2.jpg,zample-demo-3.jpg,zample-demo-4.jpg' },
 	],
 
 	curve_frequency_to_english_mapping : [
