@@ -29,7 +29,8 @@ function($scope, $routeParams, $rootScope) {
             success: function(data) { 
                 $scope.requested_school = '';
                 $scope.request_school_popup = false;
-                $scope.$digest();
+                if(!$scope.$$phase)
+                    $scope.$digest();
             }
         });
     }

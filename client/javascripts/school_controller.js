@@ -18,7 +18,8 @@ function($scope, $routeParams, $rootScope) {
                 } else {
                     $scope.courses[i] = [];
                 }
-                $scope.$digest();
+                if(!$scope.$$phase)
+                    $scope.$digest();
             }
         });
 
@@ -43,26 +44,28 @@ function($scope, $routeParams, $rootScope) {
                     else if(rounded_curve >= 7 )
                         curve_string = window.zampler.curve_frequency_to_english_mapping[2].title;
 
-                    if(rounded_difficulty <= 1)
+                    if(rounded_difficulty < 0)
                         difficulty_img_link = window.zampler.difficulty_image_links[0].link;
-                    else if(rounded_difficulty > 1 && rounded_difficulty <=2 )
+                    else if(rounded_difficulty >= 0 && rounded_difficulty <=1 )
                         difficulty_img_link = window.zampler.difficulty_image_links[1].link;
-                    else if(rounded_difficulty > 2 && rounded_difficulty <=3 )
+                    else if(rounded_difficulty > 1 && rounded_difficulty <=2 )
                         difficulty_img_link = window.zampler.difficulty_image_links[2].link;
-                    else if(rounded_difficulty > 3 && rounded_difficulty <=4 )
+                    else if(rounded_difficulty > 2 && rounded_difficulty <=3 )
                         difficulty_img_link = window.zampler.difficulty_image_links[3].link;
-                    else if(rounded_difficulty > 4 && rounded_difficulty <=5 )
+                    else if(rounded_difficulty > 3 && rounded_difficulty <=4 )
                         difficulty_img_link = window.zampler.difficulty_image_links[4].link;
-                    else if(rounded_difficulty > 5 && rounded_difficulty <=6 )
+                    else if(rounded_difficulty > 4 && rounded_difficulty <=5 )
                         difficulty_img_link = window.zampler.difficulty_image_links[5].link;
-                    else if(rounded_difficulty > 6 && rounded_difficulty <=7 )
+                    else if(rounded_difficulty > 5 && rounded_difficulty <=6 )
                         difficulty_img_link = window.zampler.difficulty_image_links[6].link;
-                    else if(rounded_difficulty > 7 && rounded_difficulty <=8 )
+                    else if(rounded_difficulty > 6 && rounded_difficulty <=7 )
                         difficulty_img_link = window.zampler.difficulty_image_links[7].link;
-                    else if(rounded_difficulty > 8 && rounded_difficulty <=9 )
+                    else if(rounded_difficulty > 7 && rounded_difficulty <=8 )
                         difficulty_img_link = window.zampler.difficulty_image_links[8].link;
-                    else if(rounded_difficulty > 9 && rounded_difficulty <=10 )
-                        difficulty_img_link = window.zampler.difficulty_image_links[9].link;
+                    else if(rounded_difficulty > 8 && rounded_difficulty <=9 ) 
+                        difficulty_img_link = window.zampler.difficulty_image_links[9].link; 
+                    else if(rounded_difficulty > 9)
+                        difficulty_img_link = window.zampler.difficulty_image_links[9].link; 
 
                     $scope.courses[i] = {
                         id        : data[i].id,

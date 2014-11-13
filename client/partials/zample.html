@@ -15,13 +15,10 @@
     <h1 class='header-text'> {{ zample.title }} </h1>
     <!-- <div id="zample-image-thumbnail-container" ng-repeat="link in zample_image_links"> -->
     <div id="zample-image-thumbnail-container">
-        <img ng-src="/client/images/zample-demo-2.jpg" ng-click="setSelectedImage(link)">
-        <img ng-src="/client/images/zample-demo-1.jpg" ng-click="setSelectedImage(link)">
-        <img ng-src="/client/images/zample-demo-3.jpg" ng-click="setSelectedImage(link)">
-        <img ng-src="/client/images/zample-demo-4.jpg" ng-click="setSelectedImage(link)">
+        <img ng-repeat="link in zample_image_links" ng-src="/server/user_uploads/{{link}}" ng-click="setSelectedImage(link)">
     </div>
     <div id="selected-zample-image-container">
-        <img ng-src="/client/images/zample-demo-2.jpg">
+        <img ng-src="/server/user_uploads/{{selected_zample_image_link}}">
     </div>
     <h1 id="likes"><span class="glyphicon glyphicon-thumbs-up"></span> 3</h1>
     <button id="report-this-zample" ng-hide="user_owns_this_zample">report this zample</button>

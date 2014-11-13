@@ -6,6 +6,7 @@
     <link rel="stylesheet/less" href="/client/stylesheets/style.less" />
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="/lib/uploadifive/uploadifive.css" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
@@ -19,6 +20,58 @@
     <script src="/client/javascripts/course_controller.js"></script>
     <script src="/client/javascripts/zample_controller.js"></script>
     <script src="/client/javascripts/objects.js"></script>
+    <script src="/lib/uploadifive/jquery.uploadifive.min.js"></script>
+
+    <script>
+      /* Everything Involving Image Upload Is Here */
+      <?php $timestamp = time();?>
+      $(function() {
+          $('#custom-file-upload-button').click( function() {
+              $('#uploadifive-file-upload input:last').click();
+          });
+
+          $('#file-upload').uploadifive({
+              'auto'             : false,
+              'fileType'         : ["image/jpg","application/pdf", "image/jpeg", "image/png"],
+              'fileSizeLimit'    : 3000,
+              'checkScript'      : '/lib/uploadifive/check-exists.php',
+              'formData'         : {
+                                       'timestamp' : '<?php echo $timestamp;?>',
+                                       'token'     : '<?php echo md5('unique_salt' . $timestamp);?>'
+                                   },
+              'queueID'          : 'file-upload-queue',
+              'queueSizeLimit'   : 6,
+              'uploadScript'     : '/lib/uploadifive/uploadifive.php',
+              'removeCompleted'  : 'true',
+              'onAddQueueItem'   : function() {
+                                      var $body = angular.element(document.body); 
+                                      var $rootScope = $body.scope().$root;       
+                                      $rootScope.$apply(function () {  
+                                          $rootScope.create_zample_parameters.thereAreImages = true;
+                                          $rootScope.create_zample_parameters.error[8] = false;
+                                      });
+                                   },
+              'onUploadComplete' : function(file, data) { 
+                                      if(data && data != '') {
+                                          var $body = angular.element(document.body); 
+                                          var $rootScope = $body.scope().$root;       
+                                          $rootScope.$apply(function () {  
+                                              if(!$rootScope.create_zample_parameters.images)
+                                                  $rootScope.create_zample_parameters.images = data;
+                                              else        
+                                                  $rootScope.create_zample_parameters.images += ',' + data;
+                                          });
+                                      }
+                                   },
+              'onQueueComplete'  : function(uploads) {
+                                      var $body = angular.element(document.body); 
+                                      var $rootScope = $body.scope().$root;       
+                                      setTimeout(function(){$rootScope.createZample()}, 500);
+                                   }
+          });
+      });
+    </script>
+
   </head>
   <body ng-app="zamplerApp">
     
@@ -109,6 +162,7 @@
           <option value="2015">2015</option>
         </select>
         <select id="create-zample-difficulty" ng-model="create_zample_parameters.difficulty">
+          <option value='0' >0</option>
           <option value='1' >1</option>
           <option value='2' >2</option>
           <option value='3' >3</option>
@@ -121,11 +175,14 @@
           <option value='10'>10</option>
         </select>
         <select id="create-zample-curved" ng-model="create_zample_parameters.curved">
-          <option value="1">No</option>
+          <option value="0">No</option>
           <option value="10">Yes</option>
           <option value="na">N/A</option>
         </select>
+        <button id="custom-file-upload-button">Select Files</button><h2>Supported File Types .pdf .png .jpg</h2>
+        <input type="file" name="file_upload" id="file-upload" multiple="true">
       </div>
+      <div id="file-upload-queue"></div>
       <div id="create-zample-errors">
         <h3 ng-show="create_zample_parameters.error[0]"> Attempted course creation name already exists at this university. </h3>
         <h3 ng-show="create_zample_parameters.error[1]"> No school chosen. </h3>
@@ -138,7 +195,7 @@
         <h3 ng-show="create_zample_parameters.error[8]"> No images uploaded. </h3>
         <h3 ng-show="create_zample_parameters.error[9]"> SORRY, this is a weird bug -- but please change your course to a different one, and then re-select the desired course. </h3>
       </div>
-      <button id="create-zample-button" ng-click="createZampleInDatabase()">create</button>
+      <button id="create-zample-button" ng-click="validateZampleCreationForm()">create</button>
     </div>
     <!-- This is where views are injected -->
   	<div id='application-wrapper'>

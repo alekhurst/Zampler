@@ -15,7 +15,9 @@ button {
 		outline: none;
 	}
 }
-
+::-webkit-scrollbar {
+    width: 0px;
+}
 #application-wrapper {
 	position: relative;
 	left: 50%;
@@ -30,7 +32,7 @@ button {
 	top: 100px;
 	margin: 0px 0px 0px -250px;
 	width: 500px;
-	height: 600px;
+	min-height: 600px;
 	background-color: @grey-ui;
 	box-shadow: 5px 5px 5px @grey-text-secondary;
 	z-index: 1;
@@ -94,17 +96,36 @@ button {
 				outline: none;
 			}
 		}
+		#custom-file-upload-button {
+			position: relative;
+			top: 17px;
+			border: none;
+			background-color: @grey-text-secondary;
+			&:hover {
+				background-color: @grey-text-primary;
+			}
+		}
+		h2 {
+			display: inline;
+			position: relative;
+			top: 17px;
+			left: 5px;
+			color: @grey-text-primary;
+			font-size: 12px;
+			font-weight: 300;
+		}
 	}
 
 	#create-zample-button {
-		position: absolute;
-		bottom: 20px;
+		position: relative;
+		float: left;
+		clear: both;
 		left: 200px;
 		border: none;
 		padding: 10px 20px;
 		font-size: 20px;
 		color: white;
-		background-color: @app-blue;
+		background-color: #5ca7a2;
 		font-weight: 300;
 		&:hover {
 			background-color: @app-light-blue;
@@ -116,11 +137,13 @@ button {
 	}
 
 	#create-zample-errors {
+		float: left;
+		clear: both;
 		height: 90px;
 		width: 420px;
 		left: 30px;
-		position: absolute;
-		bottom: 60px;
+		position: relative;
+		padding: 5px 0px;
 
 		h3 {
 			font-size: 12px;
@@ -128,6 +151,14 @@ button {
 			color: @warning-red;
 			display: inline;
 		}
+	}
+
+	#file-upload-queue {
+		float: left;
+		clear: both;
+		width: 430px;
+		margin: 0px 0px 0px 25px;
+		min-height: 0px;
 	}
 }
 
@@ -201,6 +232,7 @@ button {
 		}
 	}
 }
+
 /* log in pupup */
 #log-in-popup {
 	position: absolute;
@@ -463,7 +495,7 @@ button {
 		padding: 0;
 		list-style-type: none;
 		max-height: 200px;
-		overflow-y: scroll;
+		overflow-y: auto;
 		li {
 			margin: 0px 0px 5px 0px;
 			padding: 0px 0px 0px 45px;
@@ -480,6 +512,12 @@ button {
 			}
 		}
 	}
+	.serach-results::-webkit-scrollbar {
+		width: 0px;
+	} .serach-results::-webkit-scrollbar-thumb {
+		border-radius:0px;
+		background-color:none;
+	} 
 
 	.add-school {
 		cursor: pointer;
@@ -705,6 +743,8 @@ nav {
 	}
 
 	#selected-zample-image-container {
+		display: block;
+		clear: both;
 		img {
 			max-width: 960px;
 		}
@@ -712,8 +752,10 @@ nav {
 
 	#likes {
 		position: relative;
-		top: 20px;
-		display: inline;
+		top: 0px;
+		display: inline-block;
+		clear: both;
+		float: left;
 
 		.liked {
 			color: green;

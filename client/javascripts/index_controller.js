@@ -53,6 +53,7 @@ function($rootScope, $location, $route) {
                 } else {
                     $rootScope.user = undefined;
                 }
+                $route.reload();
                 $rootScope.$apply();
             }
         });
@@ -92,6 +93,7 @@ function($rootScope, $location, $route) {
                     } else {
                         $rootScope.log_in_credentials.error = true;
                     }
+                    $route.reload();
                     $rootScope.$apply();
                 }
             });
@@ -204,32 +206,11 @@ function($rootScope, $location, $route) {
         }
     }
 
+
+
     /* ----------------- BEGIN ZAMPLE CREATION STUFF --------------------------- */
-    /**
-     * Create a Zample - Parameters used throughout creating
-     */
-    $rootScope.create_zample_parameters = {
-        user_id : undefined,
-        school_id : undefined,
-        course_id : undefined,
-        course_options : undefined,
-        creating_new_course : undefined,
-        new_course_title : undefined,
-        new_course_id : undefined,
-        zample_name : undefined,
-        professor : undefined,
-        date_completed : undefined,
-        difficulty : undefined,
-        curved : undefined,
-        images : undefined,
-        error : [],
-        errors_exist : undefined,
-        flag_to_change_course : undefined
-    };
-
-    /* PREPARE YOURSELF! HERE COMES THE STORMMMMMMMMMMMM 
-                    (creating a zample)                  */
-
+    /*              PREPARE YOURSELF! HERE COMES THE STORMMMMMMMMMMMM            */
+                            
     /**
      * Create a Zample - Updates course dropdown when a school is selected
      */
@@ -247,7 +228,8 @@ function($rootScope, $location, $route) {
                     $rootScope.create_zample_parameters.course_options = [{name: '', id: ''}];
                 }
                 $rootScope.create_zample_parameters.flag_to_change_course = true; // user cannot submit this form until they change the course
-                $rootScope.$apply();
+                if(!$rootScope.$$phase)
+                    $rootScope.$digest();
             }
         });
     }; 
@@ -266,7 +248,7 @@ function($rootScope, $location, $route) {
     /**
      * Create a Zample - Called when user clicks 'create' after filling out the create a zample form
      */
-    $rootScope.createZampleInDatabase = function() {
+    $rootScope.validateZampleCreationForm = function() {
 
         // check to see if they created a new course. If they didn't, don't 
         // try to create a course and run normally. 
@@ -296,10 +278,11 @@ function($rootScope, $location, $route) {
                             if($rootScope.create_zample_parameters.errors_exist == true) {
                                 return;
                             } else {
-                                createZample();
+                                uploadImages();
                             }
                         }
-                        $rootScope.$apply();
+                        if(!$rootScope.$$phase)
+                            $rootScope.$apply();
                     }
                 });
             }
@@ -308,43 +291,15 @@ function($rootScope, $location, $route) {
             if($rootScope.create_zample_parameters.errors_exist == true)
                 return;
             else
-                createZample();
+                uploadImages();
         }
 
-        // create the new zample
-        function createZample() {
-            var cid;
-            if($rootScope.create_zample_parameters.new_course_id)
-                cid = $rootScope.create_zample_parameters.new_course_id;
-            else
-                cid = $rootScope.create_zample_parameters.course_id;
-            if($rootScope.create_zample_parameters.curved == 'na')
-                curve = -1;
-            else
-                curve = $rootScope.create_zample_parameters.curved;
-
-            $.ajax({
-                url : "/server/create_zample.php",
-                type: "POST",
-                data : { 
-                            user_id        : $rootScope.user.id,
-                            school_id      : $rootScope.create_zample_parameters.school_id,
-                            course_id      : cid,
-                            zample_name    : $rootScope.create_zample_parameters.zample_name,
-                            professor      : $rootScope.create_zample_parameters.professor,
-                            date_completed : $rootScope.create_zample_parameters.date_completed,
-                            difficulty     : $rootScope.create_zample_parameters.difficulty,
-                            curved         : curve,
-                            images         : ''
-                        },
-                success: function() { 
-                    clearCreateZampleParams();
-                    $rootScope.create_zample_popup = false;
-                    $rootScope.recalculateCourseStats(cid);
-                    $route.reload();
-                    $rootScope.$apply();
-                }
-            });
+        function uploadImages() {
+            if($rootScope.create_zample_parameters.thereAreImages) {
+                $('#file-upload').uploadifive('upload');
+                $rootScope.create_zample_parameters.error[8] = false;
+            } else 
+                $rootScope.create_zample_parameters.error[8] = true;
         }
 
         // checks if any of create-a-zample fields are blank and alerts the user to change before form submission
@@ -394,10 +349,6 @@ function($rootScope, $location, $route) {
             } else {
                 $rootScope.create_zample_parameters.error[9] = false;
             }
-            if($rootScope.create_zample_parameters.images) {
-                // $rootScope.create_zample_parameters.error[8];
-                // $rootScope.create_zample_parameters.errors_exist = true;
-            } 
 
             for(var i = 0; i<$rootScope.create_zample_parameters.error.length; i++) {
                 if($rootScope.create_zample_parameters.error[i] == true) {
@@ -406,27 +357,66 @@ function($rootScope, $location, $route) {
                 }
             }
         }
-
-        function clearCreateZampleParams() {
-            $rootScope.create_zample_parameters = {
-                user_id : undefined,
-                school_id : undefined,
-                course_id : undefined,
-                course_options : undefined,
-                creating_new_course : undefined,
-                new_course_title : undefined,
-                new_course_id : undefined,
-                zample_name : undefined,
-                professor : undefined,
-                date_completed : undefined,
-                difficulty : undefined,
-                curved : undefined,
-                images : undefined,
-                error : [],
-                errors_exist : undefined
-            };
-        }
     };
+
+    /**
+     * create the new zample after all errors have been checked
+     */
+    $rootScope.createZample = function() {
+        var cid;
+        if($rootScope.create_zample_parameters.new_course_id)
+            cid = $rootScope.create_zample_parameters.new_course_id;
+        else
+            cid = $rootScope.create_zample_parameters.course_id;
+        if($rootScope.create_zample_parameters.curved == 'na')
+            curve = -1;
+        else
+            curve = $rootScope.create_zample_parameters.curved;
+
+        $.ajax({
+            url : "/server/create_zample.php",
+            type: "POST",
+            data : { 
+                        user_id        : $rootScope.user.id,
+                        school_id      : $rootScope.create_zample_parameters.school_id,
+                        course_id      : cid,
+                        zample_name    : $rootScope.create_zample_parameters.zample_name,
+                        professor      : $rootScope.create_zample_parameters.professor,
+                        date_completed : $rootScope.create_zample_parameters.date_completed,
+                        difficulty     : $rootScope.create_zample_parameters.difficulty,
+                        curved         : curve,
+                        images         : $rootScope.create_zample_parameters.images
+                    },
+            success: function(data) { 
+                $rootScope.clearCreateZampleParams();
+                $rootScope.create_zample_popup = false;
+                $rootScope.recalculateCourseStats(cid);
+                window.location.href = '#/zample/' + data;
+            }
+        });
+    }
+
+    $rootScope.clearCreateZampleParams = function() {
+        $rootScope.create_zample_parameters = {
+            user_id : undefined,
+            school_id : undefined,
+            course_id : undefined,
+            course_options : undefined,
+            creating_new_course : undefined,
+            new_course_title : undefined,
+            new_course_id : undefined,
+            zample_name : undefined,
+            professor : undefined,
+            date_completed : undefined,
+            difficulty : undefined,
+            curved : undefined,
+            images : undefined,
+            there_are_images : undefined,
+            error : [],
+            errors_exist : undefined
+        };
+    }
+    $rootScope.clearCreateZampleParams(); // clear on load
 
     /**
      * Called when a zample is added or removed

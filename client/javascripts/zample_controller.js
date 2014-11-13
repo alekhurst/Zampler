@@ -24,7 +24,8 @@ function($scope, $routeParams, $rootScope, $window) {
                     success: function(data) { 
                         if(data === 'yes') {
                             $scope.user_owns_this_zample = true;
-                            $scope.$digest();
+                            if(!$scope.$$phase)
+                                $scope.$digest();
                         }
                     }
                 });
@@ -37,12 +38,16 @@ function($scope, $routeParams, $rootScope, $window) {
             url : "/server/get_zample_from_id.php",
             type: "POST",
             data : { 
-                        id : $routeParams.zample_id,
+                        id : $routeParams.zample_id
                     },
             success: function(data) { 
-                $scope.zample = JSON.parse(data)[0];
-                $scope.$digest();
-                $scope.checkIfUserOwnsThisZample();
+                if(data != '' && data != 'null') {
+                    $scope.zample = JSON.parse(data)[0];
+                    $scope.parseZampleImageLinks();
+                    $scope.checkIfUserOwnsThisZample();
+                    if(!$scope.$$phase)
+                        $scope.$digest();
+                }
             }
         });
     };
@@ -52,16 +57,19 @@ function($scope, $routeParams, $rootScope, $window) {
             url : "/server/delete_zample.php",
             type: "POST",
             data : { 
-                        id : $routeParams.zample_id,
+                        zample_id : $routeParams.zample_id,
+                        user_id : $rootScope.user.id
                     },
             success: function(data) { 
                 $rootScope.recalculateCourseStats(data);
-                window.location.href = '/#/course/' + data;
+                if(data != '' && data != 'null') {
+                    window.location.href = '/#/course/' + data;
+                }
             }
         });
     };
 
-    $scope.parseZampleImageLinks = function() {                                // REPLACE WITH AJAX
+    $scope.parseZampleImageLinks = function() {                             
         $scope.zample_image_links = $scope.zample.images.split(",")
         $scope.selected_zample_image_link = $scope.zample_image_links[0];
     };
@@ -77,6 +85,5 @@ function($scope, $routeParams, $rootScope, $window) {
         $scope.remove_zample_popup = false;
     }
 
-    //$scope.parseZampleImageLinks();
     $scope.getZampleFromId();
 }])

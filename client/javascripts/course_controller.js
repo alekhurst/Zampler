@@ -17,7 +17,8 @@ function($scope, $routeParams, $rootScope) {
                     },
             success: function(data) { 
                 $scope.current_course = JSON.parse(data)[0];
-                $scope.$digest();
+                if(!$scope.$$phase)
+                    $scope.$digest();
             }
         });
     }
@@ -30,8 +31,11 @@ function($scope, $routeParams, $rootScope) {
                         course_id : $routeParams.course_id,
                    },
             success: function(data) { 
-                $scope.zamples = JSON.parse(data);
-                $scope.$digest();
+                if(data != '') {
+                    $scope.zamples = JSON.parse(data);
+                    if(!$scope.$$phase)
+                        $scope.$digest();
+                }
             }
         });
     }

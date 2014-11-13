@@ -1,18 +1,9 @@
 <?php
-	$servername = "localhost";
-	$username = "root";
-	$password = "root";
-	$dbname = "Zampler";
+	require_once 'database_config.php';
 
-	//create connection
-	$conn = new mysqli($servername, $username, $password, $dbname);
-	
-	//check connection
-	if(mysqli_connect_errno()) {
-		echo "Failed to connect to MySQL: " . mysqli_connect_error();
-	}
+	$id =  mysqli_real_escape_string($conn, $_POST['zample_id']);
+	$user_id =  mysqli_real_escape_string($conn, $_POST['user_id']);
 
-	$id =  mysqli_real_escape_string($conn, $_POST['id']);
 	$sql = "SELECT * FROM Zamples WHERE id=$id";
 	$result = mysqli_query($conn,$sql);
 	$i = 0;
@@ -22,10 +13,13 @@
 	}
 	$course_id = $rows[0]['course_id'];
 
-	$sql = "DELETE FROM Zamples WHERE id=$id";
-	mysqli_query($conn,$sql);
+	if($rows[0]['user_id'] != $user_id)
+		echo '';
+	else {
+		$sql = "DELETE FROM Zamples WHERE id=$id";
+		mysqli_query($conn,$sql);
 
-	echo $course_id;
-
+		echo $course_id;
+	}
 	$conn->close();
 ?>
