@@ -9,11 +9,11 @@
 	$date_completed =  mysqli_real_escape_string($conn, $_POST['date_completed']);
 	$difficulty =  mysqli_real_escape_string($conn, $_POST['difficulty']);
 	$curved =  mysqli_real_escape_string($conn, $_POST['curved']);
-	$images =  mysqli_real_escape_string($conn, $_POST['images']);
+	$files =  mysqli_real_escape_string($conn, $_POST['files']);
 
 
-	$sql = "INSERT INTO Zamples (id, user_id, school_id, course_id, title, professor, date_completed, difficulty, curved, likes, images, date_submitted) 
-	               VALUES (DEFAULT, '$user_id', '$school_id', '$course_id', '$zample_name', '$professor', '$date_completed', '$difficulty', '$curved', '0', '$images', CURRENT_TIMESTAMP);";
+	$sql = "INSERT INTO Zamples (id, user_id, school_id, course_id, title, professor, date_completed, difficulty, curved, likes, files, date_submitted) 
+	               VALUES (DEFAULT, '$user_id', '$school_id', '$course_id', '$zample_name', '$professor', '$date_completed', '$difficulty', '$curved', '0', '$files', CURRENT_TIMESTAMP);";
 	mysqli_query($conn,$sql);
 
 	$sql = "SELECT * FROM Zamples WHERE user_id=$user_id";

@@ -16,9 +16,13 @@ function($scope, $routeParams, $rootScope) {
                         id : $routeParams.course_id,
                     },
             success: function(data) { 
-                $scope.current_course = JSON.parse(data)[0];
-                if(!$scope.$$phase)
-                    $scope.$digest();
+                if(data == 'null' || !data) {
+                    window.location.href = '#'; // 404
+                } else {
+                    $scope.current_course = JSON.parse(data)[0];
+                    if(!$scope.$$phase)
+                        $scope.$digest();
+                }
             }
         });
     }

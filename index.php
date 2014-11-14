@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" />
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="/lib/uploadifive/uploadifive.css" />
+    <link rel="shortcut icon" href="http://54.67.2.106/favicon.ico" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
@@ -23,7 +24,7 @@
     <script src="/lib/uploadifive/jquery.uploadifive.min.js"></script>
 
     <script>
-      /* Everything Involving Image Upload Is Here */
+      /* Everything Involving File Upload Is Here */
       <?php $timestamp = time();?>
       $(function() {
           $('#custom-file-upload-button').click( function() {
@@ -32,7 +33,7 @@
 
           $('#file-upload').uploadifive({
               'auto'             : false,
-              'fileType'         : ["image/jpg","application/pdf", "image/jpeg", "image/png"],
+              'fileType'         : ["image/jpg","application/pdf", "image/jpeg", "image/png", "text/plain"],
               'fileSizeLimit'    : 3000,
               'checkScript'      : '/lib/uploadifive/check-exists.php',
               'formData'         : {
@@ -43,11 +44,19 @@
               'queueSizeLimit'   : 6,
               'uploadScript'     : '/lib/uploadifive/uploadifive.php',
               'removeCompleted'  : 'true',
+              'onError'          : function(errorType) {
+                                      var $body = angular.element(document.body); 
+                                      var $rootScope = $body.scope().$root; 
+                                      $rootScope.$apply(function () {  
+                                        $rootScope.create_zample_parameters.error[10] = true;
+                                      });                                      
+                                   },
               'onAddQueueItem'   : function() {
                                       var $body = angular.element(document.body); 
                                       var $rootScope = $body.scope().$root;       
                                       $rootScope.$apply(function () {  
-                                          $rootScope.create_zample_parameters.thereAreImages = true;
+                                          $rootScope.create_zample_parameters.error[10] = false;
+                                          $rootScope.create_zample_parameters.there_are_files = true;
                                           $rootScope.create_zample_parameters.error[8] = false;
                                       });
                                    },
@@ -55,18 +64,20 @@
                                       if(data && data != '') {
                                           var $body = angular.element(document.body); 
                                           var $rootScope = $body.scope().$root;       
-                                          $rootScope.$apply(function () {  
-                                              if(!$rootScope.create_zample_parameters.images)
-                                                  $rootScope.create_zample_parameters.images = data;
+                                          $rootScope.$apply(function () { 
+                                              $rootScope.create_zample_parameters.error[10] = false; 
+                                              if(!$rootScope.create_zample_parameters.files)
+                                                  $rootScope.create_zample_parameters.files = data;
                                               else        
-                                                  $rootScope.create_zample_parameters.images += ',' + data;
+                                                  $rootScope.create_zample_parameters.files += ',' + data;
                                           });
                                       }
                                    },
               'onQueueComplete'  : function(uploads) {
                                       var $body = angular.element(document.body); 
-                                      var $rootScope = $body.scope().$root;       
-                                      setTimeout(function(){$rootScope.createZample()}, 500);
+                                      var $rootScope = $body.scope().$root; 
+                                      if($rootScope.create_zample_parameters.error[10] != true)      
+                                        $rootScope.createZample();
                                    }
           });
       });
@@ -140,7 +151,7 @@
         <h2>date completed:</h2>
         <h2>difficulty:</h2>
         <h2>curved?:</h2>
-        <h2>images:</h2>
+        <h2>files:</h2>
       </div>
       <div id="create-zample-input-fields">
         <select id="create-zample-school" ng-change="updateCreateZampleCourseOptions(create_zample_parameters.school_id)" ng-options="a_school.id as a_school.name for a_school in schools" ng-model="create_zample_parameters.school_id">
@@ -179,7 +190,7 @@
           <option value="10">Yes</option>
           <option value="na">N/A</option>
         </select>
-        <button id="custom-file-upload-button">Select Files</button><h2>Supported File Types .pdf .png .jpg</h2>
+        <button id="custom-file-upload-button">Select Files</button><h2><span>*REMOVE YOUR NAME FROM FILE</span></h2>
         <input type="file" name="file_upload" id="file-upload" multiple="true">
       </div>
       <div id="file-upload-queue"></div>
@@ -192,8 +203,9 @@
         <h3 ng-show="create_zample_parameters.error[5]"> Date completed blank. </h3>
         <h3 ng-show="create_zample_parameters.error[6]"> Difficulty blank. </h3>
         <h3 ng-show="create_zample_parameters.error[7]"> Curved blank. </h3>
-        <h3 ng-show="create_zample_parameters.error[8]"> No images uploaded. </h3>
+        <h3 ng-show="create_zample_parameters.error[8]"> No files uploaded. </h3>
         <h3 ng-show="create_zample_parameters.error[9]"> SORRY, this is a weird bug -- but please change your course to a different one, and then re-select the desired course. </h3>
+        <h3 ng-show="create_zample_parameters.error[10]"> Invalid file type. </h3>
       </div>
       <button id="create-zample-button" ng-click="validateZampleCreationForm()">create</button>
     </div>

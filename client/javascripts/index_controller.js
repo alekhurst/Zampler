@@ -3,7 +3,8 @@ ZamplerApp.run([
 "$rootScope", 
 "$location",
 "$route", 
-function($rootScope, $location, $route) {
+"$window",
+function($rootScope, $location, $route, $window) {
 
     $rootScope.user = undefined;
     $rootScope.log_in_credentials = {};
@@ -16,6 +17,7 @@ function($rootScope, $location, $route) {
     $rootScope.showLogInPopup = function() {
         $rootScope.log_in_popup = true;
         $rootScope.hideCreateAccountPopup();
+        $window.scrollTo(0,0);
     }; $rootScope.showCreateAccountPopup = function() {
         $rootScope.create_account_popup = true;
         $rootScope.hideLogInPopup();
@@ -54,7 +56,8 @@ function($rootScope, $location, $route) {
                     $rootScope.user = undefined;
                 }
                 $route.reload();
-                $rootScope.$apply();
+                if(!$rootScope.$$phase)
+                    $rootScope.$apply();
             }
         });
     }
@@ -90,11 +93,13 @@ function($rootScope, $location, $route) {
 
                         $rootScope.log_in_credentials = undefined;
                         $rootScope.hideLogInPopup();
+                        $route.reload();
+                        if(!$rootScope.$$phase)
+                            $rootScope.$apply();
+
                     } else {
                         $rootScope.log_in_credentials.error = true;
-                    }
-                    $route.reload();
-                    $rootScope.$apply();
+                    }    
                 }
             });
         } else {
@@ -165,11 +170,13 @@ function($rootScope, $location, $route) {
                     if(data == 'duplicate') {
                         $rootScope.create_account_parameters.errors_exist = true;
                         $rootScope.create_account_parameters.errors[4] = true;
-                        $rootScope.$apply();
+                        if(!$rootScope.$$phase)
+                            $rootScope.$apply();
                         return;
                     } else if(data == 'ok') {
                         $rootScope.create_account_parameters.errors[4] = false;
-                        $rootScope.$apply();
+                        if(!$rootScope.$$phase)
+                            $rootScope.$apply();
                         $rootScope.createAccountInDatabase();
                     }
                 }
@@ -190,7 +197,8 @@ function($rootScope, $location, $route) {
                 clearCreateAccountParams();
                 $rootScope.create_account_popup = false;
                 $rootScope.checkIfLoggedIn();
-                $rootScope.$apply();
+                if(!$rootScope.$$phase)
+                    $rootScope.$apply();
             }
         });
 
@@ -278,7 +286,7 @@ function($rootScope, $location, $route) {
                             if($rootScope.create_zample_parameters.errors_exist == true) {
                                 return;
                             } else {
-                                uploadImages();
+                                uploadFiles();
                             }
                         }
                         if(!$rootScope.$$phase)
@@ -291,11 +299,11 @@ function($rootScope, $location, $route) {
             if($rootScope.create_zample_parameters.errors_exist == true)
                 return;
             else
-                uploadImages();
+                uploadFiles();
         }
 
-        function uploadImages() {
-            if($rootScope.create_zample_parameters.thereAreImages) {
+        function uploadFiles() {
+            if($rootScope.create_zample_parameters.there_are_files) {
                 $('#file-upload').uploadifive('upload');
                 $rootScope.create_zample_parameters.error[8] = false;
             } else 
@@ -385,7 +393,7 @@ function($rootScope, $location, $route) {
                         date_completed : $rootScope.create_zample_parameters.date_completed,
                         difficulty     : $rootScope.create_zample_parameters.difficulty,
                         curved         : curve,
-                        images         : $rootScope.create_zample_parameters.images
+                        files          : $rootScope.create_zample_parameters.files
                     },
             success: function(data) { 
                 $rootScope.clearCreateZampleParams();
@@ -410,8 +418,8 @@ function($rootScope, $location, $route) {
             date_completed : undefined,
             difficulty : undefined,
             curved : undefined,
-            images : undefined,
-            there_are_images : undefined,
+            files : undefined,
+            there_are_files : undefined,
             error : [],
             errors_exist : undefined
         };

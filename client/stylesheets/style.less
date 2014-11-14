@@ -9,6 +9,7 @@
 
 body {
 	font-family: 'Open Sans', sans-serif;
+	font-weight: 300;
 }
 button {
 	&:focus {
@@ -32,7 +33,7 @@ button {
 	top: 100px;
 	margin: 0px 0px 0px -250px;
 	width: 500px;
-	min-height: 600px;
+	min-height: 510px;
 	background-color: @grey-ui;
 	box-shadow: 5px 5px 5px @grey-text-secondary;
 	z-index: 1;
@@ -98,7 +99,7 @@ button {
 		}
 		#custom-file-upload-button {
 			position: relative;
-			top: 17px;
+			top: 10px;
 			border: none;
 			background-color: @grey-text-secondary;
 			&:hover {
@@ -106,13 +107,19 @@ button {
 			}
 		}
 		h2 {
+		
 			display: inline;
 			position: relative;
-			top: 17px;
+			padding: 0;
+			margin: 0px;
+			top: 10px;
 			left: 5px;
 			color: @grey-text-primary;
-			font-size: 12px;
+			font-size: 11px;
 			font-weight: 300;
+			span {
+				color: @warning-red;
+			}
 		}
 	}
 
@@ -139,7 +146,7 @@ button {
 	#create-zample-errors {
 		float: left;
 		clear: both;
-		height: 90px;
+		min-height: 20px;
 		width: 420px;
 		left: 30px;
 		position: relative;
@@ -733,22 +740,39 @@ nav {
 		color: @light-brown;
 	}
 
-	#zample-image-thumbnail-container {
-		img {
-			float: left;
-			cursor: pointer;
-			height: 100px;
-			margin: 0px 5px 5px 0px;
+	ul {
+		padding: 0
+	}
+	li {
+		cursor: pointer;
+		color: white;
+		font-weight: 300;
+		font-size: 20px;
+		float: left;
+		list-style-type: none;
+		background-color: @app-blue;
+		border: none;
+		margin: 0px 2px 0px 0px;
+		padding: 5px 10px;
+		
+		&:hover {
+			background-color: @app-light-blue;
 		}
 	}
+	
 
-	#selected-zample-image-container {
+	#selected-zample-file-container {
 		display: block;
 		clear: both;
-		img {
-			max-width: 960px;
+		overflow: scroll;
+		iframe {
+			margin: 15px 0px 0px 0px;
+			width: 960px;
+			height: 1050px;
+			border: none;
+			overflow: scroll;
 		}
-	}
+	} 
 
 	#likes {
 		position: relative;
@@ -761,12 +785,22 @@ nav {
 			color: green;
 		}
 
-		span {
+		.clickable {
 			cursor: pointer;
+		} .non-clickable {
+			color: green;
 		}
 	}
+
+	#scroll-warning {
+		font-size: 15px;
+		color: @grey-text-secondary;
+		text-align: center;
+		margin-top: 0px;
+		font-weight: 300;
+	}
 	
-	#report-this-zample {
+	.report-this-zample {
 		float: right;
 		position: relative;
 		top: 20px;
@@ -778,6 +812,13 @@ nav {
 		&:hover {
 			background-color: #dd7873;
 		}
+	}
+
+	.zample-reported {
+		float: right;
+		margin: 30px 0px 0px 0px;
+		font-size: 20px;
+		color: #da6964;
 	}
 
 	#remove-this-zample {

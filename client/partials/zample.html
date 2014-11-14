@@ -13,15 +13,22 @@
         </div>
     </nav>
     <h1 class='header-text'> {{ zample.title }} </h1>
-    <!-- <div id="zample-image-thumbnail-container" ng-repeat="link in zample_image_links"> -->
-    <div id="zample-image-thumbnail-container">
-        <img ng-repeat="link in zample_image_links" ng-src="/server/user_uploads/{{link}}" ng-click="setSelectedImage(link)">
+    <ul>
+        <li ng-repeat="link in zample_file_links" ng-click="setSelectedFile(link)">File {{$index + 1}}</li>
+    </ul>
+    <div id="selected-zample-file-container">
+        <iframe ng-src="{{selected_zample_file_link}}" srolling="yes"></iframe>
     </div>
-    <div id="selected-zample-image-container">
-        <img ng-src="/server/user_uploads/{{selected_zample_image_link}}">
-    </div>
-    <h1 id="likes"><span class="glyphicon glyphicon-thumbs-up"></span> 3</h1>
-    <button id="report-this-zample" ng-hide="user_owns_this_zample">report this zample</button>
+    <h1 id="scroll-warning">Tip: hold shift while scrolling to scroll horizontally</h1>
+    <h1 id="likes">
+        <span class="glyphicon glyphicon-thumbs-up clickable" ng-click="showLogInPopup()" ng-show="!user"></span> 
+        <span class="glyphicon glyphicon-thumbs-up clickable" ng-click="likeThisZample()" ng-show="!user_liked_this_zample && user"></span> 
+        <span class="glyphicon glyphicon-thumbs-up non-clickable" ng-show="user_liked_this_zample"></span> 
+        {{zample.likes}}
+    </h1>
+    <button class="report-this-zample" ng-show="!user_owns_this_zample && !user" ng-click="showLogInPopup()" >report this zample</button>
+    <button class="report-this-zample" ng-show="!user_owns_this_zample && !user_reported_this_zample && user" ng-click="reportThisZample()">report this zample</button>
+    <h2 class="zample-reported" ng-show="!user_owns_this_zample && user_reported_this_zample">reported, we're looking into it.</h2>
     <button id="remove-this-zample" ng-show="user_owns_this_zample" ng-cloak ng-click="showRemoveZamplePopup()">delete this zample</button>
 </div>
 

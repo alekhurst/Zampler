@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+	<head>
+  		<meta charset="UTF-8">
+  		<title>Schedule</title>
+  		<link rel="stylesheet" href="style/mystyles.css" type="text/css">
+ 	</head>
+ 	<body>
+ 		<div id="container">
+ 		<header>
+  			<h1>Alek Hurst</h1>
+ 		</header>
+ 		<hr />
+ 		<div id="nav_bar">
+ 			<a href="index.html" class="nav_button">Home</a>
+ 			<a href="hobby.html" class="nav_button">Hobby</a>
+ 			<a href="schedule.html" class="nav_button">Schedule</a>
+ 		</div>
+ 		<section>
+	    <h4>Course List & Schedule</h4>
+		<table class="schedule">
+		<tr>
+		<td>Course Name</td>
+		<td>Course Number</td>
+		<td>Days of Week</td>
+		<td>Time</td>
+		</tr>
+	    <tr>
+	        <td>Operating Systems</td>
+	        <td>COEN 177</td>
+	        <td>Tue, Thu</td>
+	        <td>8:30-10:10</td>
+	    </tr>
+	    <tr>
+	        <td>Operating Systems - LAB</td>
+	        <td>COEN 177L</td>
+	        <td>Fri</td>
+	        <td>2:15-5:00</td>
+	    </tr>
+
+	    <tr>
+	        <td>Intro to Comparative Politics</td>
+	        <td>POLI 2</td>
+	        <td>Tue, Thu</td>
+	        <td>10:20-12:00</td>
+	    </tr>
+	    <tr>
+	        <td>Ethical Issues in Business</td>
+	        <td>PHIL 6</td>
+	        <td>Mon, Wed, Fri</td>
+	        <td>1:00-2:15</td>
+	    </tr>
+	    <tr class="important" style="background-color:#FFCC66;">
+	        <td>Introduction to Web Programming</td>
+	        <td>COEN 161</td>
+	        <td>Mon, Wed, Fri</td>
+	        <td>9:15-10:20</td>
+	    </tr>
+	    <tr class="important" style="background-color:#FFCC66;">
+	        <td>Introduction to Web Programming - LAB</td>
+	        <td>COEN 161L</td>
+	        <td>Mon</td>
+	        <td>2:15-5:00</td>
+	    </tr>
+	    </table>
+	    
+	    </section>
+	    <hr />
+	    <section>
+ 		<footer>
+ 			<address>
+   				Alek Hurst<br />
+   				ahurst@scu.edu<br />
+   				(707) 228-5326<br />
+   			</address>
+ 		</footer>	
+ 		</section>	
+ 		</div>  
+ 	</body>
+</html>

@@ -4,12 +4,14 @@ ZamplerApp.controller('ZampleController', [
 '$routeParams',
 '$rootScope',
 '$window',
-function($scope, $routeParams, $rootScope, $window) {
+function($scope, $routeParams, $rootScope, $window, $sce) {
     $scope.zample = {}; 
     $scope.remove_zample_popup = false;
     $scope.user_owns_this_zample = false;
-    $scope.zample_image_links = [];
-    $scope.selected_zample_image_link = '';
+    $scope.user_liked_this_zample = false;
+    $scope.user_reported_this_zample = false;
+    $scope.zample_file_links = [];
+    $scope.selected_zample_file_link = '';
     
     $scope.checkIfUserOwnsThisZample = function() {
         if($rootScope.user) {
@@ -33,6 +35,48 @@ function($scope, $routeParams, $rootScope, $window) {
         }
     }
 
+    $scope.checkIfUserLikedThisZample = function() {
+        if($rootScope.user) {
+            if($rootScope.user.id) {
+                $.ajax({
+                    url : "/server/check_zample_liker.php",
+                    type: "POST",
+                    data : { 
+                                zample_id : $routeParams.zample_id,
+                            },
+                    success: function(data) { 
+                        if(data == 'yes') {
+                            $scope.user_liked_this_zample = true;
+                            if(!$scope.$$phase)
+                                $scope.$digest();
+                        }   
+                    }
+                });
+            }
+        }
+    }
+
+    $scope.checkIfUserReportedThisZample = function() {
+        if($rootScope.user) {
+            if($rootScope.user.id) {
+                $.ajax({
+                    url : "/server/check_if_user_reported_this_zample.php",
+                    type: "POST",
+                    data : { 
+                                zample_id : $routeParams.zample_id,
+                            },
+                    success: function(data) { 
+                        if(data == 'yes') {
+                            $scope.user_reported_this_zample = true;
+                            if(!$scope.$$phase)
+                                $scope.$digest();
+                        }
+                    }
+                });
+            }
+        }
+    };
+
     $scope.getZampleFromId = function() {
         $.ajax({
             url : "/server/get_zample_from_id.php",
@@ -41,13 +85,17 @@ function($scope, $routeParams, $rootScope, $window) {
                         id : $routeParams.zample_id
                     },
             success: function(data) { 
-                if(data != '' && data != 'null') {
+                if(data == 'null' || !data) {
+                    window.location.href = '#'; // 404
+                } else {
                     $scope.zample = JSON.parse(data)[0];
-                    $scope.parseZampleImageLinks();
+                    $scope.parseZampleFileLinks();
                     $scope.checkIfUserOwnsThisZample();
+                    $scope.checkIfUserLikedThisZample();
+                    $scope.checkIfUserReportedThisZample();
                     if(!$scope.$$phase)
                         $scope.$digest();
-                }
+                } 
             }
         });
     };
@@ -58,7 +106,6 @@ function($scope, $routeParams, $rootScope, $window) {
             type: "POST",
             data : { 
                         zample_id : $routeParams.zample_id,
-                        user_id : $rootScope.user.id
                     },
             success: function(data) { 
                 $rootScope.recalculateCourseStats(data);
@@ -69,13 +116,48 @@ function($scope, $routeParams, $rootScope, $window) {
         });
     };
 
-    $scope.parseZampleImageLinks = function() {                             
-        $scope.zample_image_links = $scope.zample.images.split(",")
-        $scope.selected_zample_image_link = $scope.zample_image_links[0];
+    $scope.reportThisZample = function() {
+        $.ajax({
+            url : "/server/report_zample.php",
+            type: "POST",
+            data : { 
+                        zample_id : $routeParams.zample_id,
+                    },
+            success: function(data) { 
+                if(data == 'success') {
+                    $scope.user_reported_this_zample = true;
+                    if(!$scope.$$phase)
+                        $scope.$digest();  
+                }
+            }   
+        });
     };
 
-    $scope.setSelectedImage = function(link) {
-        $scope.selected_zample_image_link = link;
+    $scope.likeThisZample = function() {
+        $.ajax({
+            url : "/server/like_zample.php",
+            type: "POST",
+            data : { 
+                        zample_id : $routeParams.zample_id,
+                    },
+            success: function(data) { 
+                if(data == 'success') {
+                    $scope.user_liked_this_zample = true;
+                    $scope.zample.likes++;
+                    if(!$scope.$$phase)
+                        $scope.$digest();   
+                }
+            }
+        });
+    };
+    
+    $scope.parseZampleFileLinks = function() {                             
+        $scope.zample_file_links = $scope.zample.files.split(",");
+        $scope.selected_zample_file_link = "../../user_uploads/" + $scope.zample_file_links[0];
+    };
+
+    $scope.setSelectedFile = function(link) {
+        $scope.selected_zample_file_link = "../../user_uploads/" + link;
     };
 
     $scope.showRemoveZamplePopup = function() {

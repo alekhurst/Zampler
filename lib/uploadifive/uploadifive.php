@@ -5,16 +5,15 @@ Copyright (c) 2012 Reactive Apps, Ronnie Garcia
 */
 
 // Set the uplaod directory
-$uploadDir = '/server/user_uploads/';
+$uploadDir = __DIR__.'/../../user_uploads/';
 
 // Set the allowed file extensions
-$fileTypes = array('jpg', 'jpeg', 'png', 'pdf'); // Allowed file extensions
+$fileTypes = array('jpg', 'jpeg', 'png', 'pdf', 'txt', 'text', 'c', 'cpp', 'html', 'js', 'php', 'jvm', 'rb', 'py'); // Allowed file extensions
 
 $verifyToken = md5('unique_salt' . $_POST['timestamp']);
 
 if (!empty($_FILES) && $_POST['token'] == $verifyToken) {
 	$tempFile   = $_FILES['Filedata']['tmp_name'];
-	$uploadDir  = '../..' . $uploadDir;
 	$targetFile = $uploadDir . $_POST['timestamp'] . $_FILES['Filedata']['name'];
 	$upload_name = $_POST['timestamp'] . $_FILES['Filedata']['name'];
 

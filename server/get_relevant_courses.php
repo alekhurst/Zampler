@@ -12,6 +12,9 @@
 	    $i++;
 	}
 	
-	echo json_encode($rows);
+	if(isset($rows))
+		echo json_encode($rows);
+	else
+		echo 'null';
 	$conn->close();
 ?>

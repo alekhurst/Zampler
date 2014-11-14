@@ -3,7 +3,7 @@
     <h1 class='header-text'>Work less, learn more</h1>
     <input class='search-schools' type='text' placeholder='Search for your school...' ng-model="search.$">
     <ul class='search-results' >
-      <li ng-repeat='school in schools | filter:search' ng-click="openCoursesForThisSchool(school.id)">{{ school.name }}</li>
+      <li ng-repeat='school in schools | filter:search | orderBy:"name"' ng-click="openCoursesForThisSchool(school.id)">{{ school.name }}</li>
     </ul>
     <h3 class='add-school' ng-click="showRequestSchoolPopup()">don't see your school?</h3>
 </div>

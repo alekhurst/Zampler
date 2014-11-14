@@ -1,6 +1,8 @@
 <?php
 	require_once 'database_config.php';
 
+	$id =  mysqli_real_escape_string($conn, $_POST['course']);
+
 	$sql = "SELECT * FROM Zamples WHERE course_id=$id";
 	$result = mysqli_query($conn, $sql);
 
@@ -25,7 +27,6 @@
 	if($i == 0) {
 		$sql = "UPDATE Courses SET zample_count=0,  difficulty=-1, curve_frequency=-1 WHERE id=$id";
 		$result = mysqli_query($conn, $sql);
-		echo json_encode($rows);
 	}
 	else {
 		if($no_curve_yet)
