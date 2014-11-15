@@ -13,19 +13,28 @@
         </div>
     </nav>
     <h1 class='header-text'> {{ zample.title }} </h1>
-    <ul>
+    <ul id="file-links">
         <li ng-repeat="link in zample_file_links" ng-click="setSelectedFile(link)">File {{$index + 1}}</li>
     </ul>
-    <div id="selected-zample-file-container">
-        <iframe ng-src="{{selected_zample_file_link}}" srolling="yes"></iframe>
-    </div>
-    <h1 id="scroll-warning">Tip: hold shift while scrolling to scroll horizontally</h1>
     <h1 id="likes">
         <span class="glyphicon glyphicon-thumbs-up clickable" ng-click="showLogInPopup()" ng-show="!user"></span> 
         <span class="glyphicon glyphicon-thumbs-up clickable" ng-click="likeThisZample()" ng-show="!user_liked_this_zample && user"></span> 
         <span class="glyphicon glyphicon-thumbs-up non-clickable" ng-show="user_liked_this_zample"></span> 
         {{zample.likes}}
     </h1>
+    <div id="selected-zample-file-container">
+        <iframe ng-src="{{selected_zample_file_link}}" srolling="yes"></iframe>
+    </div>
+
+    <ul id="comment-container">
+        <li class='comment' ng-repeat="comment in zample_comments"><p><span>{{comment.posted_by}} </span>{{comment.body}}</p></li>
+    </ul>
+    <textarea placeholder="enter a comment..." ng-model="create_comment.body"></textarea>
+    <h3 class="comment-error" ng-show="create_comment.errors[0]">Comment field empty</h3>
+    <h3 class="comment-error" ng-show="create_comment.errors[1]">Max comment length is 255</h3>
+    <button class="submit-comment" ng-click="showLogInPopup()" ng-show="!user">submit</button>
+    <button class="submit-comment" ng-click="createComment()" ng-show="user">submit</button>
+
     <button class="report-this-zample" ng-show="!user_owns_this_zample && !user" ng-click="showLogInPopup()" >report this zample</button>
     <button class="report-this-zample" ng-show="!user_owns_this_zample && !user_reported_this_zample && user" ng-click="reportThisZample()">report this zample</button>
     <h2 class="zample-reported" ng-show="!user_owns_this_zample && user_reported_this_zample">reported, we're looking into it.</h2>

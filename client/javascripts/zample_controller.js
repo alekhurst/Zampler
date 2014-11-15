@@ -11,6 +11,8 @@ function($scope, $routeParams, $rootScope, $window, $sce) {
     $scope.user_liked_this_zample = false;
     $scope.user_reported_this_zample = false;
     $scope.zample_file_links = [];
+    $scope.zample_comments = [];
+    $scope.create_comment = {};
     $scope.selected_zample_file_link = '';
     
     $scope.checkIfUserOwnsThisZample = function() {
@@ -90,6 +92,7 @@ function($scope, $routeParams, $rootScope, $window, $sce) {
                 } else {
                     $scope.zample = JSON.parse(data)[0];
                     $scope.parseZampleFileLinks();
+                    $scope.loadComments();
                     $scope.checkIfUserOwnsThisZample();
                     $scope.checkIfUserLikedThisZample();
                     $scope.checkIfUserReportedThisZample();
@@ -99,6 +102,69 @@ function($scope, $routeParams, $rootScope, $window, $sce) {
             }
         });
     };
+
+    $scope.loadComments = function() {
+        $.ajax({
+            url : "/server/get_comments.php",
+            type: "POST",
+            data : { 
+                        zample_id : $routeParams.zample_id,
+                    },
+            success: function(data) { 
+                if(data != '' && data != 'null') {
+                    parseComments(JSON.parse(data));
+                    if(!$scope.$$phase)
+                        $scope.$digest();
+                }
+            }
+        });
+
+        function parseComments(data) {
+            for(var i = 0; i<data.length; i++) {
+                $scope.zample_comments[i] = {
+                    posted_by    : data[i].user_name,
+                    posted_by_id : data[i].user_id,
+                    body         : data[i].body,
+                    id           : data[i].id
+                }
+            }
+        }
+    }
+
+    $scope.createComment = function() {
+        $scope.create_comment.errors_exist = false;
+
+        if(!$scope.create_comment.body || $scope.create_comment.body == '') {
+            $scope.create_comment = { body : '', errors : [], errors_exist : false};
+            $scope.create_comment.errors[0] = true;
+            $scope.create_comment.errors_exist = true;
+            return;
+        } else if($scope.create_comment.body.length > 256) {           
+            $scope.create_comment.errors[1] = true;
+            $scope.create_comment.errors_exist = true;
+            return;        
+        } 
+
+        if(!$scope.create_comment.errors_exist) {
+            if($rootScope.user) {
+                $.ajax({
+                    url : "/server/create_comment.php",
+                    type: "POST",
+                    data : { 
+                                zample_id : $routeParams.zample_id,
+                                body      : $scope.create_comment.body,
+                                user_name : $rootScope.user.username
+                            },
+                    success: function(data) { 
+                        $scope.loadComments();
+                        $scope.create_comment.body = '';
+                        if(!$scope.$$phase)
+                            $scope.$digest();
+                    }
+                });
+            }
+        } 
+    }
 
     $scope.deleteThisZample = function() {
         $.ajax({
@@ -154,11 +220,21 @@ function($scope, $routeParams, $rootScope, $window, $sce) {
     $scope.parseZampleFileLinks = function() {                             
         $scope.zample_file_links = $scope.zample.files.split(",");
         $scope.selected_zample_file_link = "../../user_uploads/" + $scope.zample_file_links[0];
+        $('iframe').load(function() {
+            $('iframe').contents().find('img').css('max-width', '960px')
+        })
     };
 
     $scope.setSelectedFile = function(link) {
         $scope.selected_zample_file_link = "../../user_uploads/" + link;
+        $('iframe').load(function() {
+            $('iframe').contents().find('img').css('max-width', '960px')
+        })       
     };
+
+    $scope.rotateSelectedFile = function() {
+        $('iframe').contents().find('img').addClass('rotate-image');  
+    }
 
     $scope.showRemoveZamplePopup = function() {
         $scope.remove_zample_popup = true;

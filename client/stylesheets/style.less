@@ -740,26 +740,25 @@ nav {
 		color: @light-brown;
 	}
 
-	ul {
-		padding: 0
-	}
-	li {
-		cursor: pointer;
-		color: white;
-		font-weight: 300;
-		font-size: 20px;
-		float: left;
-		list-style-type: none;
-		background-color: @app-blue;
-		border: none;
-		margin: 0px 2px 0px 0px;
-		padding: 5px 10px;
-		
-		&:hover {
-			background-color: @app-light-blue;
+	#file-links{
+		padding: 0;
+		li {
+			cursor: pointer;
+			color: white;
+			font-weight: 300;
+			font-size: 20px;
+			float: left;
+			list-style-type: none;
+			background-color: @app-blue;
+			border: none;
+			margin: 0px 2px 0px 0px;
+			padding: 5px 10px;
+			
+			&:hover {
+				background-color: @app-light-blue;
+			}
 		}
-	}
-	
+	}	
 
 	#selected-zample-file-container {
 		display: block;
@@ -774,59 +773,127 @@ nav {
 		}
 	} 
 
-	#likes {
-		position: relative;
-		top: 0px;
-		display: inline-block;
-		clear: both;
+	#comments-title {
 		float: left;
+		clear: both;
+		font-weight: 300;
+		color: @grey-text-primary;
+		font-size: 24px;
+	}
+	#comment-container {
+		margin: 20px 0px 0px 0px;
+		float: left;
+		clear: both;
+		list-style-type: none;
+		padding: 0px;
+	
+		li {
+			position: relative;
+			padding: 0px 5px;
+			background-color: white;
+			margin: 0px 0px 0px 0px;
+			font-size: 20px;
 
-		.liked {
-			color: green;
+			p {
+				display: inline-block;
+				margin: 0;
+				color: @grey-text-primary;
+				span {
+					color: @app-blue;
+					font-weight: bold;
+				}
+			}
+
+			&:hover {
+				background-color: @grey-ui;
+			}
 		}
+	}
 
+	textarea {
+		width: 400px;
+		height: 40px;
+		margin: 10px 0px 5px 5px;
+		padding: 5px;
+		float: left;
+		clear: both;
+		resize: none;
+		border: solid 1px @grey-text-primary;
+	}
+	.comment-error {
+		float: left;
+		clear: both;
+		font-size: 13px;
+		margin: 0px 0px 5px 5px;
+		font-weight: 300;
+		padding: 0;
+		color: @warning-red;
+	}
+	.submit-comment {
+		margin: 0px 0px 0px 5px;
+		float: left;
+		clear: both;
+		border: none;
+		padding: 5px 10px;
+		background-color: @grey-ui;
+		color: @grey-text-primary;
+
+		&:hover {
+			background-color: @grey-text-secondary;
+		}
+	} 
+
+	#likes {
+		margin: 0px;
+		display: inline-block;
+		color: @grey-text-primary;
+		font-weight: 300;
+		font-size: 30px;
+		clear: none;
+		float: right;
+
+		span {
+			font-size: 34px;
+			position: relative;
+			top: 4px;
+		}
 		.clickable {
 			cursor: pointer;
 		} .non-clickable {
-			color: green;
+			color: #7fbf7f;
 		}
-	}
-
-	#scroll-warning {
-		font-size: 15px;
-		color: @grey-text-secondary;
-		text-align: center;
-		margin-top: 0px;
-		font-weight: 300;
 	}
 	
 	.report-this-zample {
+		margin-left: 840px;
+		margin-top: 100px;
+		text-align: right;
 		float: right;
-		position: relative;
-		top: 20px;
 		font-size: 12px;
-		background-color: @warning-red;
+		background-color: white;
+		color: @grey-text-secondary;
 		padding: 8px 12px;
 		border: none;
 
 		&:hover {
-			background-color: #dd7873;
+			background-color: @grey-ui;
 		}
 	}
 
 	.zample-reported {
 		float: right;
-		margin: 30px 0px 0px 0px;
+		margin: 90px 0px 0px 680px;
 		font-size: 20px;
 		color: #da6964;
 	}
 
 	#remove-this-zample {
+		margin-left: 840px;
+		margin-top: 100px;
+		text-align: right;
 		float: right;
-		position: relative;
-		top: 20px;
 		font-size: 12px;
-		background-color: @warning-red;
+		background-color: #da6964;
 		padding: 8px 12px;
 		border: none;
 

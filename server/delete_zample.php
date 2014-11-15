@@ -20,6 +20,12 @@
 		$sql = "DELETE FROM Zamples WHERE id=$id";
 		mysqli_query($conn,$sql);
 
+		$sql = "DELETE FROM Likes WHERE zample_id=$id";
+		mysqli_query($conn,$sql);
+		
+		$sql = "DELETE FROM Comments WHERE zample_id=$id";
+		mysqli_query($conn,$sql);
+
 		echo $course_id;
 	}
 	$conn->close();

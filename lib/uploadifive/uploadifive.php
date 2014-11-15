@@ -13,9 +13,10 @@ $fileTypes = array('jpg', 'jpeg', 'png', 'pdf', 'txt', 'text', 'c', 'cpp', 'html
 $verifyToken = md5('unique_salt' . $_POST['timestamp']);
 
 if (!empty($_FILES) && $_POST['token'] == $verifyToken) {
-	$tempFile   = $_FILES['Filedata']['tmp_name'];
-	$targetFile = $uploadDir . $_POST['timestamp'] . $_FILES['Filedata']['name'];
-	$upload_name = $_POST['timestamp'] . $_FILES['Filedata']['name'];
+	$tempFile = $_FILES['Filedata']['tmp_name'];
+	$pray_for_unique = rand(0,10000);
+	$targetFile = $uploadDir . time() . $pray_for_unique . $_FILES['Filedata']['name'];
+	$upload_name = time() . $pray_for_unique . $_FILES['Filedata']['name'];
 
 	// Validate the filetype
 	$fileParts = pathinfo($_FILES['Filedata']['name']);

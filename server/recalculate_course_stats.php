@@ -24,9 +24,9 @@
 	    $i++;
 	}
 	
-	if($i == 0) {
-		$sql = "UPDATE Courses SET zample_count=0,  difficulty=-1, curve_frequency=-1 WHERE id=$id";
-		$result = mysqli_query($conn, $sql);
+	if($i == 0) { // delete course if no zamples in it
+		$sql = "DELETE FROM Courses WHERE id=$id";
+		mysqli_query($conn, $sql);
 	}
 	else {
 		if($no_curve_yet)

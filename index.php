@@ -76,7 +76,7 @@
               'onQueueComplete'  : function(uploads) {
                                       var $body = angular.element(document.body); 
                                       var $rootScope = $body.scope().$root; 
-                                      if($rootScope.create_zample_parameters.error[10] != true)      
+                                      if($rootScope.create_zample_parameters.error[10] != true) 
                                         $rootScope.createZample();
                                    }
           });
