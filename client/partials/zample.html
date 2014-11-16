@@ -12,16 +12,20 @@
             <h3 ng-click="logOut()">log out</h3>
         </div>
     </nav>
+    
     <h1 class='header-text'> {{ zample.title }} </h1>
+    
     <ul id="file-links">
         <li ng-repeat="link in zample_file_links" ng-click="setSelectedFile(link)">File {{$index + 1}}</li>
     </ul>
+    
     <h1 id="likes">
         <span class="glyphicon glyphicon-thumbs-up clickable" ng-click="showLogInPopup()" ng-show="!user"></span> 
         <span class="glyphicon glyphicon-thumbs-up clickable" ng-click="likeThisZample()" ng-show="!user_liked_this_zample && user"></span> 
         <span class="glyphicon glyphicon-thumbs-up non-clickable" ng-show="user_liked_this_zample"></span> 
         {{zample.likes}}
     </h1>
+    
     <div id="selected-zample-file-container">
         <iframe ng-src="{{selected_zample_file_link}}" srolling="yes"></iframe>
     </div>

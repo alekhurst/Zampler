@@ -91,7 +91,7 @@ function($scope, $routeParams, $rootScope, $window, $sce) {
                     window.location.href = '#'; // 404
                 } else {
                     $scope.zample = JSON.parse(data)[0];
-                    $scope.parseZampleFileLinks();
+                    $scope.loadFiles();
                     $scope.loadComments();
                     $scope.checkIfUserOwnsThisZample();
                     $scope.checkIfUserLikedThisZample();
@@ -216,14 +216,33 @@ function($scope, $routeParams, $rootScope, $window, $sce) {
             }
         });
     };
-    
-    $scope.parseZampleFileLinks = function() {                             
-        $scope.zample_file_links = $scope.zample.files.split(",");
-        $scope.selected_zample_file_link = "../../user_uploads/" + $scope.zample_file_links[0];
-        $('iframe').load(function() {
-            $('iframe').contents().find('img').css('max-width', '960px')
-        })
-    };
+
+    $scope.loadFiles = function() {
+        $.ajax({
+            url : "/server/get_files.php",
+            type: "POST",
+            data : { 
+                        zample_id : $routeParams.zample_id,
+                    },
+            success: function(data) { 
+                if(data != 'null') {
+                    parseZampleFileLinks(JSON.parse(data));  
+                    if(!$scope.$$phase)
+                        $scope.$digest();
+                }
+            }
+        });
+
+        function parseZampleFileLinks(data) {
+            for(var i=0; i<data.length; i++) {
+                $scope.zample_file_links[i] = data[i].name;
+            }
+            $scope.selected_zample_file_link = "../../user_uploads/" + $scope.zample_file_links[0];
+            $('iframe').load(function() {
+                $('iframe').contents().find('img').css('max-width', '960px');
+            })
+        }
+    }
 
     $scope.setSelectedFile = function(link) {
         $scope.selected_zample_file_link = "../../user_uploads/" + link;

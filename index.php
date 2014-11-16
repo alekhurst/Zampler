@@ -150,15 +150,15 @@
         <h2>professor:</h2>
         <h2>date completed:</h2>
         <h2>difficulty:</h2>
-        <h2>curved?:</h2>
+        <h2>was it curved?:</h2>
         <h2>files:</h2>
       </div>
       <div id="create-zample-input-fields">
-        <select id="create-zample-school" ng-change="updateCreateZampleCourseOptions(create_zample_parameters.school_id)" ng-options="a_school.id as a_school.name for a_school in schools" ng-model="create_zample_parameters.school_id">
+        <select id="create-zample-school" ng-change="updateCreateZampleCourseOptions(create_zample_parameters.school_id)" ng-options="a_school.id as a_school.name for a_school in schools | orderBy:'name'" ng-model="create_zample_parameters.school_id">
           <option value=''>Select School</option>
         </select>
         <select id="create-zample-course" ng-disabled="!create_zample_parameters.course_options" ng-model="create_zample_parameters.course_id" ng-change="checkIfCreatingNewCourse(create_zample_parameters.course_id)">
-          <option ng-repeat="a_course in create_zample_parameters.course_options" ng-value="a_course.id">{{ a_course.name }}</option>
+          <option ng-repeat="a_course in create_zample_parameters.course_options | orderBy:'name'" ng-value="a_course.id">{{ a_course.name }}</option>
           <option value='new'>-- Create New Course --</option>
         </select> 
         <input id="create-zample-create-new-course" placeholder="ex. MATH 11" type="text" ng-model="create_zample_parameters.new_course_title" ng-show="create_zample_parameters.creating_new_course">
@@ -209,6 +209,7 @@
       </div>
       <button id="create-zample-button" ng-click="validateZampleCreationForm()">create</button>
     </div>
+    
     <!-- This is where views are injected -->
   	<div id='application-wrapper'>
   		<div ng-view></div>

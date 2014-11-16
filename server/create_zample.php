@@ -12,10 +12,12 @@
 	$files =  mysqli_real_escape_string($conn, $_POST['files']);
 
 
-	$sql = "INSERT INTO Zamples (id, user_id, school_id, course_id, title, professor, date_completed, difficulty, curved, likes, files, date_submitted) 
-	               VALUES (DEFAULT, '$user_id', '$school_id', '$course_id', '$zample_name', '$professor', '$date_completed', '$difficulty', '$curved', '0', '$files', CURRENT_TIMESTAMP);";
+	// zample metadata creation
+	$sql = "INSERT INTO Zamples (id, user_id, school_id, course_id, title, professor, date_completed, difficulty, curved, likes, date_submitted) 
+	               VALUES (DEFAULT, '$user_id', '$school_id', '$course_id', '$zample_name', '$professor', '$date_completed', '$difficulty', '$curved', '0', CURRENT_TIMESTAMP);";
 	mysqli_query($conn,$sql);
 
+	// fetch zample that was just created
 	$sql = "SELECT * FROM Zamples WHERE user_id=$user_id";
 	$result = mysqli_query($conn, $sql);
 	$i = 0;
@@ -24,7 +26,18 @@
 	    $i++;
 	}
 	$i = $i - 1;
-	echo $rows[$i]['id'];
+	$zample_id = $rows[$i]['id'];
+
+	// file metadata create
+	$individual_files = explode(',', $files);
+	for($i=0; $i<count($individual_files); $i++) {
+		$file_to_insert = $individual_files[$i];
+		$sql = "INSERT INTO Files (id, zample_id, name) VALUES (DEFAULT, '$zample_id', '$file_to_insert')";
+		mysqli_query($conn,$sql);
+	}
+
+
+	echo $zample_id;
 
 	$conn->close();
 ?>

@@ -26,6 +26,8 @@
 		$sql = "DELETE FROM Comments WHERE zample_id=$id";
 		mysqli_query($conn,$sql);
 
+		// delete files here
+
 		echo $course_id;
 	}
 	$conn->close();
