@@ -4,9 +4,9 @@ ZamplerApp.controller('HomeController', [
 '$rootScope',
 function($scope, $routeParams, $rootScope) {
     $scope.request_school_popup = false;
+
     $scope.requested_school = '';
     $scope.school_search = 'Search for your school...';
-
     
     $scope.openCoursesForThisSchool = function(school_id) {
         window.location.href = '#/school/' + school_id;
@@ -14,8 +14,7 @@ function($scope, $routeParams, $rootScope) {
 
     $scope.hideRequestSchoolPopup = function() {
         $scope.request_school_popup = false;
-    };
-    $scope.showRequestSchoolPopup = function() {
+    }; $scope.showRequestSchoolPopup = function() {
         $scope.request_school_popup = true;
     };
 

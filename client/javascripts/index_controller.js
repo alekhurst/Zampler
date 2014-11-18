@@ -13,6 +13,7 @@ function($rootScope, $location, $route, $window) {
     $rootScope.create_account_popup = false;
     $rootScope.log_in_popup = false;
     $rootScope.create_zample_popup = false;
+    $rootScope.what_is_zampler_popup = false;
 
     $rootScope.showLogInPopup = function() {
         $rootScope.log_in_popup = true;
@@ -23,6 +24,8 @@ function($rootScope, $location, $route, $window) {
         $rootScope.hideLogInPopup();
     }; $rootScope.showCreateZamplePopup = function() {
         $rootScope.create_zample_popup = true;
+    }; $rootScope.showWhatIsZamplerPopup = function() {
+        $rootScope.what_is_zampler_popup = true;
     }; 
 
     $rootScope.hideLogInPopup = function() {
@@ -35,7 +38,13 @@ function($rootScope, $location, $route, $window) {
         $rootScope.create_account_popup = false;
     }; $rootScope.hideCreateZamplePopup = function() {
         $rootScope.create_zample_popup = false;
-    };
+    }; $rootScope.hideWhatIsZamplerPopup = function() {
+        $rootScope.what_is_zampler_popup = false;
+        $.cookie('has_seen_ethics_statement', 'true');
+    }; $rootScope.takeToChegg = function() {
+        $.cookie('has_seen_ethics_statement', 'false');
+        window.location = "http://www.chegg.com/homework-help/textbook-solutions";
+    }
 
     /**
      * at every reload, check if user is logged in

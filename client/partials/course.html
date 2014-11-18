@@ -13,8 +13,8 @@
         </div>
     </nav>
     <h1 class='header-text'> {{ current_course.name }} </h1>
-    <input type='text' id='search-zamples' placeholder='Filter courses...' ng-model="search.$">
-    <table class='table table-hover zample-table'>
+    <input type='text' id='search-zamples' placeholder='Filter zamples...' ng-model="search.$">
+    <!-- <table class='table table-hover zample-table'>
         <thead>
             <tr>
                 <th class='col-md-6'>Zample</th>
@@ -31,5 +31,17 @@
                 <td class='col-md-1'> {{ zample.likes }} </td>
             </tr>
         </tbody>
-    </table>
+    </table> -->
+    <div id="zamples">
+            <div class="a-zample" ng-repeat="zample in zamples | filter:search | orderBy: 'title'" ng-click="openThisZample(zample.id)" >
+                <h1>{{ zample.title }}</h1>
+                <h2>{{ zample.professor }}</h2>
+                <h2>{{ zample.date_completed }}</h2>
+                <h3>
+                    <span class='first-mini-stat'><span class="glyphicon glyphicon-thumbs-up"></span> : {{ zample.likes }} </span><br>
+                    <span class='second-mini-stat'> curved : {{ returnCurvedString(zample.curved) }}</span><br>
+                    <span class='third-mini-stat'> difficulty : <img ng-src='{{returnDifficultyLink(zample.difficulty)}}'> </span>
+                </h3>  
+            </div>
+    </div>
 </div>

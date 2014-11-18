@@ -10,6 +10,7 @@
     <link rel="shortcut icon" href="http://54.67.2.106/favicon.ico" />
 
     <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <script src="//cdn.jsdelivr.net/jquery.cookie/1.4.1/jquery.cookie.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular.min.js"></script>
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.2/angular-route.min.js"></script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/less.js/2.0.0/less.min.js"></script>
@@ -27,6 +28,14 @@
       /* Everything Involving File Upload Is Here */
       <?php $timestamp = time();?>
       $(function() {
+          if($.cookie('has_seen_ethics_statement') != 'true' ) {
+              var $body = angular.element(document.body); 
+              var $rootScope = $body.scope().$root; 
+              $rootScope.$apply(function () {  
+                $rootScope.what_is_zampler_popup = true;
+              });  
+          };
+
           $('#custom-file-upload-button').click( function() {
               $('#uploadifive-file-upload input:last').click();
           });
@@ -85,7 +94,21 @@
 
   </head>
   <body ng-app="zamplerApp">
-    
+    <!-- What is zampler popup -->
+    <div id="what-is-zampler-popup" ng-show="what_is_zampler_popup" ng-cloak>
+      <h1>What is zampler?</h1>
+      <h3>Zampler is a place for college students to post <span>completed</span> and <span>returned</span> coursework for others to <span>learn</span> from.</h3>
+      <h1>We are not a tool for cheating.</h1>
+      <h3>After hearing about zampler, your first thought was probably "isn't that cheating?" or "that sounds illegal!". This is exactly the opposite of what we are here for, and you will in fact fail out of school if you use Zampler to cheat. Zampler is a tool to help you maximize your learning efficiency via the most efficient process to date: learning by example.</h3>
+      <h1>Why we are not a tool for cheating.</h1>
+      <h3>1) The number one rule of zampler: <span>it is strictly forbidden to upload any coursework until a) the course has been completed</span>, <span>b) the quarter/semester is complete</span> and <span>c) it is your own work</span>. <span>If any of these statements are not true, you may not post the coursework to zampler.</span>This rule is enforced to abide by academic integrity and disallow anyone from using somebody else's work as their own.</h3>
+      <h3>2) You're stuck on something, let's say, a calculus problem. At this point, your first approach to solving the problem might consist of looking at the textbook, searching google, or watching a tutorial video. While looking, you don't search for algebra or trigonomotry problems, but for calculus problems, more specifically, problems similar to the one you're stuck on. The end goal is to find a problem and procedure similar to the problem you're stuck on so that you can apply the same process and come to a solution. Or in other words, to <span>learn</span>. Zampler was created to supplement these google searches, textbook examples, and video tutorials by providing you with similar examples to learn from.</h3>
+      <h3>3) Professors have every right not to hand back their coursework, and nobody has the right to get their hands on said coursework and upload it to Zampler. On the other hand, professors who do hand back coursework hopefully change their tests every quarter/semester. If tests are handed back to students and not changed for the next course, it provides an unfair advantage to the students who have access to the exact copy of the test they are about to take. Either way, Zampler is available to everybody and provides equal opportunity for all students to learn from.</h3>
+      <h3>4) As with any other example from any other source, it's your choice: <span>if you copy, you are cheating.</span> Copying will greatly increase the chances of failing the test, and anyone who does is subject to punishment from the university. </h3>
+      <button id="agree-not-to-cheat" ng-click="hideWhatIsZamplerPopup()">I agree to use zampler to learn & not to cheat</button>
+      <button id="dont-agree-not-to-cheat" ng-click="takeToChegg()">I do not agree</button>
+    </div>
+
     <!-- Create Account Popup -->
     <div id="create-account-popup" ng-cloak="create_account_popup" ng-show="create_account_popup">
       <button id="close-create-account-popup" ng-click="hideCreateAccountPopup()">
@@ -95,11 +118,8 @@
       <p>You will remain anonymous after creating an account, except for comments, which will be associated with your username.</p>
       <div id="create-account-input-labels">
         <h2>email:</h2>
-        <h3>invalid email</h3>
         <h2>username:</h2>
-        <h3>invalid username</h3>
         <h2>password:</h2>
-        <h3>passwords do not match</h3>
         <h2>verify password:</h2>
       </div>
       <div id="create-account-input-fields">
@@ -161,9 +181,9 @@
           <option ng-repeat="a_course in create_zample_parameters.course_options | orderBy:'name'" ng-value="a_course.id">{{ a_course.name }}</option>
           <option value='new'>-- Create New Course --</option>
         </select> 
-        <input id="create-zample-create-new-course" placeholder="ex. MATH 11" type="text" ng-model="create_zample_parameters.new_course_title" ng-show="create_zample_parameters.creating_new_course">
-        <input id="create-zample-title" type="text" placeholder="ex. First Midterm" ng-model="create_zample_parameters.zample_name">
-        <input id="create-zample-professor" type="text" placeholder="ex. Lastname, Firstname" ng-model="create_zample_parameters.professor">
+        <input id="create-zample-create-new-course" placeholder="MATH 11 - Intro to Calculus" type="text" ng-model="create_zample_parameters.new_course_title" ng-show="create_zample_parameters.creating_new_course">
+        <input id="create-zample-title" type="text" placeholder="Assignment 1 - Derivatives" ng-model="create_zample_parameters.zample_name">
+        <input id="create-zample-professor" type="text" placeholder="Smith, John" ng-model="create_zample_parameters.professor">
         <select id="create-zample-date-completed" ng-model="create_zample_parameters.date_completed">
           <option value="2010">2010</option>
           <option value="2011">2011</option>

@@ -101,6 +101,7 @@ button {
 			position: relative;
 			top: 20px;
 			border: none;
+			z-index: 1;
 			background-color: @grey-text-secondary;
 			&:hover {
 				background-color: @grey-text-primary;
@@ -166,6 +167,64 @@ button {
 		width: 430px;
 		margin: 0px 0px 0px 25px;
 		min-height: 0px;
+	}
+}
+
+/* explanation of what zampler is (what is zampler) popup */
+#what-is-zampler-popup {
+	position: absolute;
+	left: 50%;
+	top: 80px;
+	margin: 0px 0px 100px -350px;
+	width: 700px;
+	background-color: @grey-ui;
+	box-shadow: 5px 5px 5px @grey-text-secondary;
+	z-index: 1;
+	padding: 5px 30px 20px 30px;
+
+	h1 {
+		color: @app-blue;
+		font-size: 24px;
+		margin: 15px 0px 0px 0px;
+
+		&:first-child {
+			margin: 30px 0px 0px 0px;
+		}
+	}
+
+	h3 {
+		font-size: 17px;
+		color: #797979;
+		font-weight: 300;
+		margin: 7px 0px 0px 20px;
+
+		span {
+			text-decoration: underline;
+		}
+	}
+
+	#agree-not-to-cheat {
+		float: left;
+		margin: 30px 0px 0px 130px;
+		width: 400px;
+		border: none;
+		font-size: 18px;
+		background-color: @app-blue;
+		color: white;
+
+		&:hover {
+			background-color:@app-light-blue;
+		}
+	}
+	#dont-agree-not-to-cheat {
+		margin: 5px 0px 0px 130px;
+		border: none;
+		color: @grey-text-primary;
+		background-color: @grey-text-secondary;
+		width: 400px;
+		float: left;
+		clear: both;
+		font-size: 18px;
 	}
 }
 
@@ -526,9 +585,24 @@ button {
 		background-color:none;
 	} 
 
+	.what-is-zampler {
+		cursor: pointer;
+		font-weight: 300;
+		margin: 5px 0px 0px 0px;
+		float: right;
+		font-size: 2em;
+		color: @app-blue;
+
+		&:hover {
+			text-decoration: underline;
+		}
+	}
+
 	.add-school {
+		margin: 0px 4px 0px 0px;
 		cursor: pointer;
 		float: right;
+		clear: both;
 		font-size: 1em;
 		font-weight: 300;
 		color: @grey-text-secondary;
@@ -567,11 +641,12 @@ nav {
 	
 	.account-buttons {
 		float: right;
+		margin-top: 4px;
 		h3 {
 			float: right;
 			clear: both;
-			margin: 5px 10px;
-			font-size: 15px;
+			margin: 3px 10px;
+			font-size: 16px;
 			color: @grey-text-secondary;
 			font-weight: 300;
 			cursor: pointer;
@@ -726,6 +801,64 @@ nav {
 			}
 		}
 	}	
+
+	#zamples {
+		margin-top: 10px;
+
+		.a-zample {
+			position: relative;
+			width: 960px;
+			float: left;
+			text-align: center;
+			cursor: pointer;
+			padding: 30px;
+
+			h1 {
+				font-size: 26px;
+				color: @app-blue;
+				font-weight: 300;
+				margin: 5px;
+			} h2 {
+				font-size: 22px;
+				margin: 5px;
+				color: @grey-text-secondary;
+				font-weight: 300;
+			} h3 {
+				display: none;
+				font-weight: 300;
+				position: absolute;
+				right: 25px;
+				bottom: 0px;
+				font-size: 14px;
+				color: @grey-text-secondary;
+				text-align: left;
+
+					.first-mini-stat {
+						position: relative;
+						left: 27px;
+					}
+					.second-mini-stat {
+						position: relative;
+						left: 0px;
+					}
+					.third-mini-stat {
+						img {
+							height: 10px;
+						}
+						position: relative;
+						left: -7px;
+					}		
+			}
+
+			&:hover {
+				background-color: @grey-ui;
+
+				h3 {
+					display: block;
+				}
+			}
+		}
+	}
 }
 
 
@@ -865,8 +998,7 @@ nav {
 	}
 	
 	.report-this-zample {
-		margin-left: 840px;
-		margin-top: 100px;
+		margin: 20px 0px 20px 840px;
 		text-align: right;
 		float: right;
 		font-size: 12px;
@@ -882,14 +1014,13 @@ nav {
 
 	.zample-reported {
 		float: right;
-		margin: 90px 0px 0px 680px;
+		margin: 10px 0px 20px 680px;
 		font-size: 20px;
 		color: #da6964;
 	}
 
 	#remove-this-zample {
-		margin-left: 840px;
-		margin-top: 100px;
+		margin: 20px 0px 20px 840px;
 		text-align: right;
 		float: right;
 		font-size: 12px;

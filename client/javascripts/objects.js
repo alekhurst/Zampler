@@ -1,10 +1,10 @@
 var zampler = {
 	schools : [
 		{ id: 0, name: 'Santa Clara University' },
-		{ id: 1, name: 'University of San Fransisco' },
-		{ id: 2, name: 'San Jose State University' },
-		{ id: 2, name: 'University of California at Santa Cruz' },
-		{ id: 2, name: 'Stanford University' },
+		{ id: 1, name: 'University of San Francisco' },
+		{ id: 2, name: 'University of California, Santa Cruz' },
+		{ id: 3, name: 'Stanford University' },
+		{ id: 4, name: 'University of California, Los Angeles' }
 	],
 
 	curve_frequency_to_english_mapping : [

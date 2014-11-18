@@ -44,6 +44,21 @@ function($scope, $routeParams, $rootScope) {
         });
     }
 
+    $scope.returnCurvedString = function(val) {
+        if(val === 10 || val === '10')
+            return 'yes';
+        else if(val === 0 || val === '0')
+            return 'no';
+        else 
+            return 'n/a';
+    }
+
+    $scope.returnDifficultyLink = function(val) {
+        if(val == 0)
+            val = 1;
+        return '/client/images/' + window.zampler.difficulty_image_links[val].link;
+    }
+
     $scope.openThisZample = function(zample_id) {
         window.location.href = '#/zample/' + zample_id;
     }
